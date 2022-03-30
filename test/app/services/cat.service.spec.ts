@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CatService } from '../../../src/infra/services/cat.service';
+import { CatService } from '../../../src/app/services/cat.service';
 import CatDto from '../../../src/domain/entities/cat/cat.dto';
 
 describe('CatService', () => {

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import DomainCatService from '../../domain/entities/cat/cat.service';
-import InMemoryCatRepository from '../adapters/repositories/inmemory-repository/inmemory.cat.repository';
-import ConsoleNotifier from '../adapters/logging/console.notifier';
-import CatServiceApi from '../ports/primary/cat.service.api';
+import InMemoryCatRepository from '../../infra/adapters/repositories/inmemory-repository/inmemory.cat.repository';
+import ConsoleNotifier from '../../infra/adapters/logging/console.notifier';
+import CatServiceApi from '../../infra/ports/primary/cat.service.api';
 import CatDto from '../../domain/entities/cat/cat.dto';
 import CatMapper from '../../domain/entities/cat/cat.mapper';
 import CatModel from '../../domain/entities/cat/model/cat.model';
