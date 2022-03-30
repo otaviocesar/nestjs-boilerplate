@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CatModule } from './app/cat.module';
+import { CatModule } from '../domain/entities/cat/cat.module';
 
 @Module({
   imports: [CatModule],

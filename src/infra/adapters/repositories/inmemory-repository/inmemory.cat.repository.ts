@@ -1,6 +1,6 @@
-import CatMapper from '../../mappers/cat.mapper';
-import CatModel from '../../../domain/entities/model/cat.model';
-import CatRepository from '../../../domain/ports/secondary/cat.repository';
+import CatMapper from '../../../mappers/cat.mapper';
+import CatModel from '../../../../domain/entities/cat/model/cat.model';
+import CatRepository from '../../../ports/secondary/cat.repository';
 import CatEntity from './inmemory.cat.entity';
 
 export default class InMemoryCatRepository implements CatRepository {

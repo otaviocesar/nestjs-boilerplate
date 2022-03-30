@@ -1,4 +1,4 @@
-import CatModel from '../../entities/model/cat.model';
+import CatModel from '../../../domain/entities/cat/model/cat.model';
 
 /**
  * Primary ports represent the interface between APPLICATION -> DOMAIN

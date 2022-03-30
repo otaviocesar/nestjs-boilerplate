@@ -1,7 +1,7 @@
-import CatModel from './entities/model/cat.model';
-import CatServiceApi from './ports/primary/cat.service.api';
-import CatRepository from './ports/secondary/cat.repository';
-import Notifier from './errors/notifier';
+import CatModel from './model/cat.model';
+import CatServiceApi from '../../../infra/ports/primary/cat.service.api';
+import CatRepository from '../../../infra/ports/secondary/cat.repository';
+import Notifier from '../../../infra/ports/secondary/notifier';
 
 /**
  * Pure DOMAIN logic
