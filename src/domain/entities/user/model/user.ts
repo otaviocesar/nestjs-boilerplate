@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export default class User {
+import { Document } from 'mongoose';
+
+export default class User extends Document {
   @ApiProperty({
     example: 'Name',
     description: 'User name',

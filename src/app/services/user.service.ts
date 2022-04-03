@@ -1,39 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import DomainUserService from '../../domain/entities/user/user.service';
-import InMemoryUserRepository from '../../infra/adapters/repositories/inmemory-repository/inmemory.user.repository';
-import ConsoleNotifier from '../../infra/adapters/logging/console.notifier';
-import UserServiceApi from '../../infra/ports/primary/user.service.api';
-import UserDto from '../../domain/entities/user/user.dto';
-import UserMapper from '../../domain/entities/user/user.mapper';
-import UserModel from '../../domain/entities/user/model/user.model';
+
+import User from '../../domain/entities/user/model/user';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class UserService {
-  private userService: UserServiceApi;
+  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
-  /**
-   * This is the point where the concrete implementation InMemoryMouseRepository and ConsoleNotifier
-   * are instantiated and set int eh domain
-   * instead of direct instantiation we can use some logic based on environment variable/config to determine
-   * which concrete classes to use
-   * for example if we run on both AWS and Azure and have different implementations we should read it
-   * from an environment variable
-   */
-  constructor() {
-    this.userService = new DomainUserService(
-      new InMemoryUserRepository(),
-      new ConsoleNotifier(),
-    );
+  async create(user: User) {
+    const createdUser = new this.userModel(user);
+    return await createdUser.save();
   }
 
-  public getUsers(): UserDto[] {
-    return this.userService
-      .getAllUsers()
-      .map((userDomain) => UserMapper.toDto(userDomain));
+  async findAll() {
+    return await this.userModel.find().exec();
   }
 
-  public addUser(userDto: UserDto): void {
-    const userDomain: UserModel = UserMapper.toDomain(userDto);
-    this.userService.addUser(userDomain);
+  async getById(id: string) {
+    return await this.userModel.findById(id).exec();
+  }
+
+  async update(id: string, user: User) {
+    await this.userModel.updateOne({ _id: id }, user).exec();
+    return this.getById(id);
+  }
+
+  async delete(id: string) {
+    return await this.userModel.deleteOne({ _id: id }).exec();
   }
 }

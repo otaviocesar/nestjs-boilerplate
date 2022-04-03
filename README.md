@@ -36,24 +36,24 @@ $ npm install
 
 ```bash
 # development
-$ yarn start
+$ npm start
 
 # watch mode
-$ yarn start:dev
+$ npm start:dev
 
 # production mode
-$ yarn start:prod
+$ npm start:prod
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ yarn test
+$ npm test
 
 # e2e tests
-$ yarn test:e2e
+$ npm test:e2e
 
 # test coverage
-$ yarn test:cov
+$ npm test:cov
 ```
