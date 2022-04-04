@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from '../domain/entities/user/user.module';
-import { AuthModule } from '../domain/entities/auth/auth.module';
+import { AuthModule } from '../infra/auth/auth.module';
 
 import { MongooseModule } from '@nestjs/mongoose';
 import { MONGO_URL } from '../infra/environments';

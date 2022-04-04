@@ -20,7 +20,7 @@ import User from '../../domain/entities/user/model/user';
 
 import { UserService } from '../../app/services/user.service';
 
-import { JwtAuthGuard } from '../../infra/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../../infra/auth/jwt/jwt-auth.guard';
 
 @ApiTags('users')
 @Controller('users')

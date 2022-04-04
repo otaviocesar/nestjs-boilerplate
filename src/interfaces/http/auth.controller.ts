@@ -1,6 +1,6 @@
 import { AuthService } from '../../app/services/auth.service';
 import { Controller, Request, Post, UseGuards } from '@nestjs/common';
-import { LocalAuthGuard } from '../../infra/jwt/local-auth.guard';
+import { LocalAuthGuard } from '../../infra/auth/jwt/local-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('login')
