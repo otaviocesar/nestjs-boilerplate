@@ -1,11 +1,13 @@
 import * as dotenv from 'dotenv';
+import { constants } from '../../infra/jwt/constants';
+
 dotenv.config();
 const NODE_ENV: string = process.env.NODE_ENV || 'development';
 
 const PORT: number = +process.env.PORT || 3000;
 
 const MONGO_USER = process.env.MONGO_USER || 'db_mongo';
-const MONGO_PASS = process.env.MONGO_PASS || '';
+const MONGO_PASS = process.env.MONGO_PASS || constants.mongo_password;
 const MONGO_HOST = process.env.MONGO_HOST || 'cluster0.bs8ci.mongodb.net';
 const MONGO_DATABASE =
   process.env.MONGO_DATABASE || 'myFirstDatabase?retryWrites=true&w=majority';

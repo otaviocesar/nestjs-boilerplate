@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -18,6 +19,8 @@ import {
 import User from '../../domain/entities/user/model/user';
 
 import { UserService } from '../../app/services/user.service';
+
+import { JwtAuthGuard } from '../../infra/jwt/jwt-auth.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -33,6 +36,7 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Find user by id' })
   @ApiOkResponse()
@@ -49,6 +53,7 @@ export class UserController {
     return this.userService.create(user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   @ApiOperation({ summary: 'Update user' })
   @ApiOkResponse()
@@ -58,6 +63,7 @@ export class UserController {
     return this.userService.update(id, user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiOperation({ summary: 'Delete user' })
   @ApiOkResponse()
