@@ -8,14 +8,14 @@ import { LocalStrategy } from '../../../infra/jwt/local.strategy';
 import { JwtStrategy } from '../../../infra/jwt/jwt.strategy';
 import { AuthService } from '../../../app/services/auth.service';
 
-import { constants } from '../../../infra/jwt/constants';
+import { SECRET_JWT } from '../../../infra/environments';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: constants.secret_jwt,
+      secret: SECRET_JWT,
       signOptions: { expiresIn: '60s' },
     }),
   ],

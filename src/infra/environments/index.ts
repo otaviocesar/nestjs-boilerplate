@@ -1,10 +1,12 @@
 import * as dotenv from 'dotenv';
-import { constants } from '../../infra/jwt/constants';
+import { constants } from './constants';
 
 dotenv.config();
 const NODE_ENV: string = process.env.NODE_ENV || 'development';
 
 const PORT: number = +process.env.PORT || 3000;
+
+const SECRET_JWT = process.env.SECRET_JWT || constants.secret_jwt;
 
 const MONGO_USER = process.env.MONGO_USER || 'db_mongo';
 const MONGO_PASS = process.env.MONGO_PASS || constants.mongo_password;
@@ -15,4 +17,4 @@ const MONGO_URL =
   process.env.MONGO_URL ||
   `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}/${MONGO_DATABASE}`;
 
-export { NODE_ENV, PORT, MONGO_URL };
+export { NODE_ENV, PORT, MONGO_URL, SECRET_JWT };
