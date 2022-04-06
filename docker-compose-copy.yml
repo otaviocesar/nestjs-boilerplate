@@ -1,0 +1,45 @@
+version: "3.7"
+ 
+services:
+  nestjs-alliansce-node:
+    container_name: alliansce-node-server
+    build:
+        context: .
+        target: development
+        dockerfile: Dockerfile-dev
+        args:
+          - NODE_ENV=development    
+    environment:
+      - PORT=3000
+      - MONGO_URL=mongodb://admin:mzp74qbsMc6J2FPh!@mongo:27017/admin?retryWrites=true&w=majority
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules    
+    restart: unless-stopped
+    command: npm run start:dev
+    networks:
+      - nesjs-network
+    depends_on:
+      - "mongo"
+
+
+  mongo:
+    container_name: alliansce-mongo-server
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: mzp74qbsMc6J2FPh!
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./docker/local/volumes/mongodb:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    restart: unless-stopped
+    networks:
+      - nesjs-network
+
+networks: 
+    nesjs-network:
+      driver: bridge  
