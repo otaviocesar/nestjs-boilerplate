@@ -95,11 +95,9 @@ $ npm test:cov
 
 ## Docker and Local Environment Configuration
 
-### 1 - Rename ```.env-example``` file to  ```.env```
+### 1 - Rename ```.env-example``` file to  ```.env``` 
 
-### 2 - Rename ```constants-example.ts``` file,  to ```constants.ts``` file with environment varibles defined in ```.env``` file. 
-
-### 3 - Run ```docker-compose``` to set a new local MongoDB and up API.
+### 2 - Run ```docker-compose``` to set a new local MongoDB and up API.
 
 ```bash
 # run docker-compose (re)building application
@@ -108,7 +106,7 @@ $ docker-compose up --build
 
 ---
 ## __IMPORTANT NOTICE:__ 
-### __Never commit file ```constants.ts``` with sensitive data.__ 
+### __Never commit file ```.env``` with sensitive data.__ 
 
 ---
 
