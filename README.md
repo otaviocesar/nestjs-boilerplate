@@ -48,7 +48,7 @@ Fell free to enhance the code, building your domain structure;
 
 --- 
 
-## Architecture
+# Architecture
 
 [Domain Driven Development](https://martinfowler.com/tags/domain%20driven%20design.html) 
 
@@ -109,5 +109,11 @@ $ docker-compose up --build
 ---
 ## __IMPORTANT NOTICE:__ 
 ### __Never commit file ```constants.ts``` with sensitive data.__ 
+
+---
+
+## Access API (swagger)
+
+The API Swagger documentation is exposed at [http://localhost:3000/api](http://localhost:3000/api). 
 
 ---
