@@ -22,15 +22,47 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# Description
+
+This project is a chassis, an starter code that represents the base microservice project to develop and deploy a 
+[Nest](https://github.com/nestjs/nest) framework project.
+
+This enables connection with an embedded [MongoDB](https://www.mongodb.com/) NoSQL database and serves a web API.
+
+Fell free to enhance the code, building your domain structure;
+
+---
+# Technologies
+
+[Docker](https://www.docker.com/) 
+
+[Docker Compose](https://docs.docker.com/compose/) 
+
+[Nest](https://github.com/nestjs/nest) 
+
+[NodeJS](https://nodejs.org/en/) 
+
+[MongoDB](https://www.mongodb.com/)
+
+--- 
+
+## Architecture
+
+[Domain Driven Development](https://martinfowler.com/tags/domain%20driven%20design.html) 
+
+[Hexagonal Architecture (Ports & Adapters)](https://br.sensedia.com/post/use-of-the-hexagonal-architecture-pattern) 
+
+---
 
 ## Installation
 
 ```bash
 $ npm install
 ```
+
+---
 
 ## Running the app
 
@@ -45,6 +77,8 @@ $ npm start:dev
 $ npm start:prod
 ```
 
+---
+
 ## Test
 
 ```bash
@@ -57,3 +91,23 @@ $ npm test:e2e
 # test coverage
 $ npm test:cov
 ```
+---
+
+## Docker and Local Environment Configuration
+
+### 1 - Rename ```.env-example``` file to  ```.env```
+
+### 2 - Rename ```constants-example.ts``` file,  to ```constants.ts``` file with environment varibles defined in ```.env``` file. 
+
+### 3 - Run ```docker-compose``` to set a new local MongoDB and up API.
+
+```bash
+# run docker-compose (re)building application
+$ docker-compose up --build
+```
+
+---
+## __IMPORTANT NOTICE:__ 
+### __Never commit file ```constants.ts``` with sensitive data.__ 
+
+---
