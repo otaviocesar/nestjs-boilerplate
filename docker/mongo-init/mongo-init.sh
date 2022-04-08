@@ -1,9 +1,9 @@
 echo '################ MONGO ENTRYPOINT START ################';
-
+ 
 mongo -- "$MONGO_INITDB_DATABASE" <<EOF
 
 
-print(' Initializing development database... ');
+print(' Initializing development database....');
 
 db = db.getSiblingDB('$MONGO_INITDB_DATABASE');
 db.createUser(
