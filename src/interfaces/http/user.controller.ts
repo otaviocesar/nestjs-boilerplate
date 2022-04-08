@@ -4,6 +4,8 @@ import {
   Post,
   Put,
   Delete,
+  Res,
+  HttpStatus,
   Body,
   Param,
   UseGuards,
@@ -16,7 +18,7 @@ import {
   ApiNotFoundResponse,
   ApiForbiddenResponse,
 } from '@nestjs/swagger';
-import User from '../../domain/entities/user/model/user';
+import User from '../../domain/entities/user/user.dto';
 
 import { UserService } from '../../app/services/user.service';
 
@@ -32,8 +34,10 @@ export class UserController {
   @ApiOkResponse()
   @ApiNotFoundResponse()
   @ApiForbiddenResponse()
-  async findAll(): Promise<User[]> {
-    return this.userService.findAll();
+  @Get()
+  async findAll(@Res() request): Promise<User[]> {
+    const users = await this.userService.findAll();
+    return request.status(HttpStatus.OK).json(users);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -41,16 +45,18 @@ export class UserController {
   @ApiOperation({ summary: 'Find user by id' })
   @ApiOkResponse()
   @ApiForbiddenResponse()
-  async getById(@Param('id') id: string): Promise<User> {
-    return this.userService.getById(id);
+  public async getById(@Res() request, @Param('id') id: string): Promise<User> {
+    const user = await this.userService.getById(id);
+    return request.status(HttpStatus.OK).json(user);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create user' })
   @ApiCreatedResponse()
   @ApiForbiddenResponse()
-  async create(@Body() user: User): Promise<User> {
-    return this.userService.create(user);
+  async create(@Res() request, @Body() user: User): Promise<User> {
+    const userCreated = await this.userService.create(user);
+    return request.status(HttpStatus.CREATED).json(userCreated);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -58,9 +64,13 @@ export class UserController {
   @ApiOperation({ summary: 'Update user' })
   @ApiOkResponse()
   @ApiForbiddenResponse()
-  async update(@Param('id') id: string, @Body() user: User): Promise<User> {
-    user.id = id;
-    return this.userService.update(id, user);
+  async update(
+    @Res() request,
+    @Param('id') id: string,
+    @Body() user: User,
+  ): Promise<User> {
+    const userUpdated = await this.userService.update(id, user);
+    return request.status(HttpStatus.OK).json(userUpdated);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -68,7 +78,8 @@ export class UserController {
   @ApiOperation({ summary: 'Delete user' })
   @ApiOkResponse()
   @ApiForbiddenResponse()
-  async delete(@Param('id') id: string) {
-    this.userService.delete(id);
+  async delete(@Res() request, @Param('id') id: string): Promise<User> {
+    const user = await this.userService.delete(id);
+    return request.status(HttpStatus.OK).json(user);
   }
 }

@@ -1,4 +1,4 @@
-import { UserService } from './../../app/services/user.service';
+import { UserService } from './user.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
@@ -10,10 +10,9 @@ export class AuthService {
   ) {}
 
   async validateUser(userEmail: string, userPassword: string) {
-    const user = await this.usersService.getByEmail(userEmail);
-    if (user && user.password === userPassword) {
-      const { _id, name, email } = user;
-      return { id: _id, name, email };
+    const user = await this.usersService.findByEmail(userEmail);
+    if (user && user.getPassword() === userPassword) {
+      return user;
     }
 
     return null;
