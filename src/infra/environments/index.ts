@@ -14,6 +14,6 @@ const MONGO_DATABASE = process.env.DATABASE_NAME;
 const MONGO_PORT = process.env.DATABASE_PORT;
 const MONGO_URL =
   process.env.MONGO_URL ||
-  `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`;
+  `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}?retryWrites=true&w=majority`;
 
 export { NODE_ENV, PORT, MONGO_URL, SECRET_JWT };

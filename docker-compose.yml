@@ -29,12 +29,14 @@ services:
     container_name: aliansce-mongo-server
     image: mongo
     environment:
-      MONGO_INITDB_ROOT_DATABASE: ${DATABASE_NAME}
+      MONGO_INITDB_ROOT_DATABASE: root
+      MONGO_INITDB_DATABASE: ${DATABASE_NAME}
       MONGO_INITDB_ROOT_USERNAME: ${DATABASE_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${DATABASE_PASSWORD}
     ports:
       - "${DATABASE_PORT}:${DATABASE_PORT}"
     volumes:
+      - ./docker/init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       - ./docker/local/volumes/mongodb:/data/db
     restart: unless-stopped
     networks:
