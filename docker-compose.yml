@@ -36,7 +36,7 @@ services:
     ports:
       - "${DATABASE_PORT}:${DATABASE_PORT}"
     volumes:
-      - ./docker/init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./docker/mongo-init:/docker-entrypoint-initdb.d/:ro
       - ./docker/local/volumes/mongodb:/data/db
     restart: unless-stopped
     networks:
