@@ -1,11 +1,8 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from '../domain/entities/user/user.module';
-import { AuthModule } from '../infra/auth/auth.module';
-
-import { MongooseModule } from '@nestjs/mongoose';
-import { MONGO_URL } from '../infra/environments';
+import { DomainModule } from '../domain/domain.module';
+import { InfraModule } from '../infra/infra.module';
 
 @Module({
-  imports: [MongooseModule.forRoot(MONGO_URL), UserModule, AuthModule],
+  imports: [DomainModule, InfraModule],
 })
 export class AppModule {}

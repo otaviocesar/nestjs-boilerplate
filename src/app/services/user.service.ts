@@ -1,36 +1,33 @@
 import { Injectable } from '@nestjs/common';
 
-import User from '../../domain/entities/user/model/user';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import User from '../../domain/entities/user/user.dto';
+import { UserRepository } from '../../infra/adapters/repositories/mongodb/user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
-  async create(user: User) {
-    const createdUser = new this.userModel(user);
-    return await createdUser.save();
+  async create(user: User): Promise<User> {
+    return this.userRepository.save(user);
   }
 
   async findAll() {
-    return await this.userModel.find().exec();
+    return this.userRepository.findAll();
   }
 
   async getById(id: string) {
-    return await this.userModel.findById(id).exec();
+    return this.userRepository.findById(id);
   }
 
   async update(id: string, user: User) {
-    await this.userModel.updateOne({ _id: id }, user).exec();
-    return this.getById(id);
+    return this.userRepository.update(id, user);
   }
 
   async delete(id: string) {
-    return await this.userModel.deleteOne({ _id: id }).exec();
+    return this.userRepository.delete(id);
   }
 
-  async getByEmail(email: string) {
-    return await this.userModel.findOne({ email }).exec();
+  async findByEmail(email: string) {
+    return this.userRepository.findByEmail(email);
   }
 }
