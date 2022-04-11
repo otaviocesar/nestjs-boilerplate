@@ -20,6 +20,13 @@ import { SECRET_JWT } from '../environments';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [
+    {
+      provide: 'AuthServicePort',
+      useClass: AuthService,
+    }, 
+    LocalStrategy, 
+    JwtStrategy
+  ],
 })
 export class AuthModule {}

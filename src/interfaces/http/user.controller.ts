@@ -9,6 +9,7 @@ import {
   Body,
   Param,
   UseGuards,
+  Inject
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -20,14 +21,16 @@ import {
 } from '@nestjs/swagger';
 import User from '../../domain/entities/user/user.dto';
 
-import { UserService } from '../../app/services/user.service';
+import  { UserServicePort }  from '../../domain/ports/primary/user-service.port';
 
 import { JwtAuthGuard } from '../../infra/auth/jwt/jwt-auth.guard';
 
 @ApiTags('users')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    @Inject('UserServicePort') private userServicePort: UserServicePort,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Find users' })
@@ -36,7 +39,7 @@ export class UserController {
   @ApiForbiddenResponse()
   @Get()
   async findAll(@Res() request): Promise<User[]> {
-    const users = await this.userService.findAll();
+    const users = await this.userServicePort.findAll();
     return request.status(HttpStatus.OK).json(users);
   }
 
@@ -46,7 +49,7 @@ export class UserController {
   @ApiOkResponse()
   @ApiForbiddenResponse()
   public async getById(@Res() request, @Param('id') id: string): Promise<User> {
-    const user = await this.userService.getById(id);
+    const user = await this.userServicePort.getById(id);
     return request.status(HttpStatus.OK).json(user);
   }
 
@@ -54,8 +57,8 @@ export class UserController {
   @ApiOperation({ summary: 'Create user' })
   @ApiCreatedResponse()
   @ApiForbiddenResponse()
-  async create(@Res() request, @Body() user: User): Promise<User> {
-    const userCreated = await this.userService.create(user);
+  async save(@Res() request, @Body() user: User): Promise<User> {
+    const userCreated = await this.userServicePort.save(user);
     return request.status(HttpStatus.CREATED).json(userCreated);
   }
 
@@ -69,7 +72,7 @@ export class UserController {
     @Param('id') id: string,
     @Body() user: User,
   ): Promise<User> {
-    const userUpdated = await this.userService.update(id, user);
+    const userUpdated = await this.userServicePort.update(id, user);
     return request.status(HttpStatus.OK).json(userUpdated);
   }
 
@@ -79,7 +82,7 @@ export class UserController {
   @ApiOkResponse()
   @ApiForbiddenResponse()
   async delete(@Res() request, @Param('id') id: string): Promise<User> {
-    const user = await this.userService.delete(id);
+    const user = await this.userServicePort.delete(id);
     return request.status(HttpStatus.OK).json(user);
   }
 }

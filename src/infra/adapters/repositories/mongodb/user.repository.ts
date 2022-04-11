@@ -4,9 +4,10 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { UserEntity } from './entities/user.entity';
 import UserMapper from '../../../mappers/user.mapper';
+import { UserRepositoryPort } from '../../../../domain/ports/secondary/user-repository.port';
 
 @Injectable()
-export class UserRepository {
+export class UserRepository implements UserRepositoryPort {
   constructor(@InjectModel(User.name) private userModel: Model<UserEntity>) {}
 
   public async findAll(): Promise<User[]> {

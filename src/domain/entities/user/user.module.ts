@@ -8,7 +8,21 @@ import { UserRepository } from '../../../infra/adapters/repositories/mongodb/use
 @Module({
   imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
   controllers: [UserController],
-  providers: [UserService, UserRepository],
-  exports: [UserService],
+  providers: [
+    {
+      provide: 'UserServicePort',
+      useClass: UserService,
+    }, 
+    {
+      provide: 'UserRepositoryPort',
+      useClass: UserRepository,
+    },
+  ],
+  exports: [
+    {
+      provide: 'UserServicePort',
+      useClass: UserService,
+    }
+],
 })
 export class UserModule {}

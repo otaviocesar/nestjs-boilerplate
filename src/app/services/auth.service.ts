@@ -1,16 +1,17 @@
-import { UserService } from './user.service';
-import { Injectable } from '@nestjs/common';
+import { UserServicePort } from '../../domain/ports/primary/user-service.port';
+import { AuthServicePort } from '../../domain/ports/primary/auth-service.port';
+import { Injectable, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements AuthServicePort {
   constructor(
-    private usersService: UserService,
+    @Inject('UserServicePort') private userServicePort: UserServicePort,
     private jwtService: JwtService,
   ) {}
 
   async validateUser(userEmail: string, userPassword: string) {
-    const user = await this.usersService.findByEmail(userEmail);
+    const user = await this.userServicePort.findByEmail(userEmail);
     if (user && user.getPassword() === userPassword) {
       return user;
     }

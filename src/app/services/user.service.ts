@@ -1,33 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { UserServicePort } from '../../domain/ports/primary/user-service.port';
 
 import User from '../../domain/entities/user/user.dto';
-import { UserRepository } from '../../infra/adapters/repositories/mongodb/user.repository';
+import  { UserRepositoryPort }  from '../../domain/ports/secondary/user-repository.port';
 
 @Injectable()
-export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+export class UserService implements UserServicePort {
+  constructor(
+    @Inject('UserRepositoryPort') private userRepositoryPort: UserRepositoryPort,
+  ) {}
 
-  async create(user: User): Promise<User> {
-    return this.userRepository.save(user);
+  async save(user: User): Promise<User> {
+    return this.userRepositoryPort.save(user);
   }
 
   async findAll() {
-    return this.userRepository.findAll();
+    return this.userRepositoryPort.findAll();
   }
 
   async getById(id: string) {
-    return this.userRepository.findById(id);
+    return this.userRepositoryPort.findById(id);
   }
 
   async update(id: string, user: User) {
-    return this.userRepository.update(id, user);
+    return this.userRepositoryPort.update(id, user);
   }
 
   async delete(id: string) {
-    return this.userRepository.delete(id);
+    return this.userRepositoryPort.delete(id);
   }
 
   async findByEmail(email: string) {
-    return this.userRepository.findByEmail(email);
+    return this.userRepositoryPort.findByEmail(email);
   }
 }
