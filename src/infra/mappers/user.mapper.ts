@@ -1,5 +1,5 @@
-import User from '../../../../domain/entities/user/user.dto';
-import { UserEntity } from '../mongodb/entities/user.entity';
+import User from '../../domain/entities/user/user.dto';
+import { UserEntity } from '../adapters/repositories/mongodb/entities/user.entity';
 
 export default class UserMapper {
   public static toDomain(userEntity: UserEntity): User {
