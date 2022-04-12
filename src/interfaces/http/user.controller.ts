@@ -58,7 +58,7 @@ export class UserController {
     name: 'Authorization',
     description: 'User access token',
   })
-  @ApiOkResponse({ description: 'Success.' })
+  @ApiOkResponse({ description: 'Success.', type: UserDto })
   @ApiNotFoundResponse({ description: 'No records found.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
@@ -74,6 +74,7 @@ export class UserController {
   @ApiOperation({ summary: 'Create user' })
   @ApiCreatedResponse({
     description: 'The record has been successfully created!',
+    type: CreateUserDto,
   })
   @ApiBadRequestResponse({ description: 'Data entered incorrectly.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
