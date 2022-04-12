@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export default class User {
+export default class CreateUserDto {
   private id?: string;
 
   @ApiProperty({
@@ -28,5 +28,10 @@ export default class User {
     this.name = name;
     this.email = email;
     this.password = password;
+  }
+
+  public setCreateAt(createdAt: Date): this {
+    this.createAt = createdAt;
+    return this;
   }
 }

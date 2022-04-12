@@ -9,7 +9,7 @@ import {
   Body,
   Param,
   UseGuards,
-  Inject
+  Inject,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -18,10 +18,14 @@ import {
   ApiOkResponse,
   ApiNotFoundResponse,
   ApiForbiddenResponse,
+  ApiUnauthorizedResponse,
+  ApiBadRequestResponse,
+  ApiHeader,
 } from '@nestjs/swagger';
-import User from '../../domain/entities/user/user.dto';
+import UserDto from '../../domain/entities/user/user.dto';
+import CreateUserDto from '../../domain/entities/user/create-user.dto';
 
-import  { UserServicePort }  from '../../domain/ports/primary/user-service.port';
+import { UserServicePort } from '../../domain/ports/primary/user-service.port';
 
 import { JwtAuthGuard } from '../../infra/auth/jwt/jwt-auth.guard';
 
@@ -32,56 +36,89 @@ export class UserController {
     @Inject('UserServicePort') private userServicePort: UserServicePort,
   ) {}
 
-  @Get()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Find users' })
-  @ApiOkResponse()
-  @ApiNotFoundResponse()
-  @ApiForbiddenResponse()
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'User access token',
+  })
+  @ApiOkResponse({ description: 'Success.' })
+  @ApiNotFoundResponse({ description: 'No records found.' })
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   @Get()
-  async findAll(@Res() request): Promise<User[]> {
+  async findAll(@Res() request): Promise<UserDto[]> {
     const users = await this.userServicePort.findAll();
     return request.status(HttpStatus.OK).json(users);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
   @ApiOperation({ summary: 'Find user by id' })
-  @ApiOkResponse()
-  @ApiForbiddenResponse()
-  public async getById(@Res() request, @Param('id') id: string): Promise<User> {
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'User access token',
+  })
+  @ApiOkResponse({ description: 'Success.' })
+  @ApiNotFoundResponse({ description: 'No records found.' })
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @Get(':id')
+  public async getById(
+    @Res() request,
+    @Param('id') id: string,
+  ): Promise<UserDto> {
     const user = await this.userServicePort.getById(id);
     return request.status(HttpStatus.OK).json(user);
   }
 
-  @Post()
   @ApiOperation({ summary: 'Create user' })
-  @ApiCreatedResponse()
-  @ApiForbiddenResponse()
-  async save(@Res() request, @Body() user: User): Promise<User> {
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created!',
+  })
+  @ApiBadRequestResponse({ description: 'Data entered incorrectly.' })
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @Post()
+  async save(
+    @Res() request,
+    @Body() user: CreateUserDto,
+  ): Promise<CreateUserDto> {
     const userCreated = await this.userServicePort.save(user);
     return request.status(HttpStatus.CREATED).json(userCreated);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':id')
   @ApiOperation({ summary: 'Update user' })
-  @ApiOkResponse()
-  @ApiForbiddenResponse()
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'User access token',
+  })
+  @ApiOkResponse({ description: 'The record has been successfully updated!' })
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiBadRequestResponse({ description: 'Data entered incorrectly.' })
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @Put(':id')
   async update(
     @Res() request,
     @Param('id') id: string,
-    @Body() user: User,
-  ): Promise<User> {
+    @Body() user: UserDto,
+  ): Promise<UserDto> {
     const userUpdated = await this.userServicePort.update(id, user);
     return request.status(HttpStatus.OK).json(userUpdated);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
   @ApiOperation({ summary: 'Delete user' })
-  @ApiOkResponse()
-  @ApiForbiddenResponse()
-  async delete(@Res() request, @Param('id') id: string): Promise<User> {
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'User access token',
+  })
+  @ApiOkResponse({ description: 'The record has been successfully deleted!' })
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @Delete(':id')
+  async delete(@Res() request, @Param('id') id: string): Promise<UserDto> {
     const user = await this.userServicePort.delete(id);
     return request.status(HttpStatus.OK).json(user);
   }

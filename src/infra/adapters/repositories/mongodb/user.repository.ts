@@ -1,9 +1,12 @@
 import User from '../../../../domain/entities/user/user.dto';
+import Auth from '../../../../domain/entities/auth/auth.dto';
+import CreateUserDto from '../../../../domain/entities/user/create-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { UserEntity } from './entities/user.entity';
 import UserMapper from '../../../mappers/user.mapper';
+import AuthMapper from '../../../mappers/auth.mapper';
 import { UserRepositoryPort } from '../../../../domain/ports/secondary/user-repository.port';
 
 @Injectable()
@@ -15,10 +18,10 @@ export class UserRepository implements UserRepositoryPort {
     return UserMapper.toDomains(users);
   }
 
-  public async save(user: User): Promise<User> {
+  public async save(user: CreateUserDto): Promise<CreateUserDto> {
     let userCreated = new this.userModel(user);
     userCreated = await userCreated.save();
-    return UserMapper.toDomain(userCreated);
+    return UserMapper.toCreateDomain(userCreated);
   }
 
   public async findById(userId: string): Promise<User> {
@@ -36,8 +39,8 @@ export class UserRepository implements UserRepositoryPort {
     return UserMapper.toDomain(userUpdated);
   }
 
-  public async findByEmail(email: string): Promise<User> {
+  public async findByEmail(email: string): Promise<Auth> {
     const user = await this.userModel.findOne({ email });
-    return UserMapper.toDomain(user);
+    return AuthMapper.toDomain(user);
   }
 }

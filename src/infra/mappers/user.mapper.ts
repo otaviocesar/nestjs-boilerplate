@@ -1,4 +1,5 @@
 import User from '../../domain/entities/user/user.dto';
+import CreateUserDto from '../../domain/entities/user/create-user.dto';
 import { UserEntity } from '../adapters/repositories/mongodb/entities/user.entity';
 
 export default class UserMapper {
@@ -9,8 +10,6 @@ export default class UserMapper {
       userEntity.email,
       userEntity.password,
     );
-
-    user.setCreateAt(new Date(userEntity.createAt));
     return user;
   }
 
@@ -21,5 +20,17 @@ export default class UserMapper {
       users.push(user);
     });
     return users;
+  }
+
+  public static toCreateDomain(userEntity: UserEntity): CreateUserDto {
+    const user = new CreateUserDto(
+      userEntity.id,
+      userEntity.name,
+      userEntity.email,
+      userEntity.password,
+    );
+
+    user.setCreateAt(new Date(userEntity.createAt));
+    return user;
   }
 }
