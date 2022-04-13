@@ -32,12 +32,20 @@ export default class User {
   })
   private readonly password: string;
 
-  private createAt: Date;
+  private createAt?: Date;
 
   constructor(id: string, name: string, email: string, password: string) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.password = password;
+  }
+
+  public getEmail(): string {
+    return this.email;
+  }
+
+  public getName(): string {
+    return this.name;
   }
 }
