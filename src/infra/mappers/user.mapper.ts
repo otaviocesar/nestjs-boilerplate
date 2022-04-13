@@ -15,12 +15,13 @@ export default class UserMapper {
     return user;
   }
 
-  public static toCreateDomain(userEntity: UserEntity): CreateUserDto {
+  public static async toCreateDomain(
+    userEntity: UserEntity,
+  ): Promise<CreateUserDto> {
     const user = new CreateUserDto(
       userEntity.id,
       userEntity.name,
       userEntity.email,
-      userEntity.password,
     );
 
     user.setCreateAt(new Date(userEntity.createAt));

@@ -1,8 +1,7 @@
 import { UserServicePort } from '../../domain/ports/primary/user-service.port';
 import { AuthServicePort } from '../../domain/ports/primary/auth-service.port';
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import BadRequestException from '../../domain/errors/bad-request.exception';
 
 @Injectable()
 export class AuthService implements AuthServicePort {
@@ -13,11 +12,11 @@ export class AuthService implements AuthServicePort {
 
   async validateUser(userEmail: string, userPassword: string) {
     const user = await this.userServicePort.findByEmail(userEmail);
-    if (user && user.getPassword() === userPassword) {
-      return user;
-    } else {
-      throw new BadRequestException('Invalid Password!');
+    const isValid = await user.comparePassword(userPassword);
+    if (!isValid) {
+      throw new UnauthorizedException('Invalid credentials');
     }
+    return user;
   }
 
   async login(user: any) {
