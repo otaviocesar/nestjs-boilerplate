@@ -30,15 +30,14 @@ export default class CreateUserDto {
     example: 'password',
     description: 'User password',
   })
-  private readonly password: string;
+  private password: string;
 
   private createAt: Date;
 
-  constructor(id: string, name: string, email: string, password: string) {
+  constructor(id: string, name: string, email: string) {
     this.id = id;
     this.name = name;
     this.email = email;
-    this.password = password;
   }
 
   public setCreateAt(createdAt: Date): this {

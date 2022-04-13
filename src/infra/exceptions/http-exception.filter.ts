@@ -5,6 +5,7 @@ import {
   Logger,
   UnauthorizedException,
   NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import BadRequestException from 'src/domain/errors/bad-request.exception';
@@ -43,6 +44,12 @@ export class HttpExceptionFilter implements ExceptionFilter<Error> {
       return {
         message: exception.message,
         status: 404,
+      };
+    }
+    if (exception instanceof ConflictException) {
+      return {
+        message: exception.message,
+        status: 409,
       };
     }
     Logger.log(exception.stack);

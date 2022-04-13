@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, MinLength } from 'class-validator';
+import * as bcrypt from 'bcryptjs';
 
 export default class AuthDto {
   @IsEmail()
@@ -28,5 +29,9 @@ export default class AuthDto {
 
   public getPassword(): string {
     return this.password;
+  }
+
+  async comparePassword(attempt: string) {
+    return await bcrypt.compare(attempt, this.password);
   }
 }

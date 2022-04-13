@@ -8,12 +8,14 @@ import {
   Injectable,
   NotFoundException,
   UnauthorizedException,
+  ConflictException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { UserEntity } from './entities/user.entity';
 import UserMapper from '../../../mappers/user.mapper';
 import AuthMapper from '../../../mappers/auth.mapper';
 import { UserRepositoryPort } from '../../../../domain/ports/secondary/user-repository.port';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserRepository implements UserRepositoryPort {
@@ -29,7 +31,13 @@ export class UserRepository implements UserRepositoryPort {
 
   public async save(user: CreateUserDto): Promise<CreateUserDto> {
     let userCreated = new this.userModel(user);
+    const hashedPassword = await bcrypt.hash(userCreated.password, 10);
+    if (await this.userModel.findOne({ email: userCreated.email })) {
+      throw new ConflictException('User already exist!');
+    }
+    userCreated.password = hashedPassword;
     userCreated = await userCreated.save();
+
     return UserMapper.toCreateDomain(userCreated);
   }
 

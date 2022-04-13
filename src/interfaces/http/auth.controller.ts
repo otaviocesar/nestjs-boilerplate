@@ -29,7 +29,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   @ApiOperation({ summary: 'Login' })
-  @ApiOkResponse({ description: 'Login successfully done!' })
+  @ApiOkResponse({ description: 'Login successfully done!', type: AuthDto })
   @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })

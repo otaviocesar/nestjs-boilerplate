@@ -12,11 +12,11 @@ export class AuthService implements AuthServicePort {
 
   async validateUser(userEmail: string, userPassword: string) {
     const user = await this.userServicePort.findByEmail(userEmail);
-    if (user && user.getPassword() === userPassword) {
-      return user;
-    } else {
-      throw new UnauthorizedException('Invalid Password!');
+    const isValid = await user.comparePassword(userPassword);
+    if (!isValid) {
+      throw new UnauthorizedException('Invalid credentials');
     }
+    return user;
   }
 
   async login(user: any) {
