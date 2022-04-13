@@ -21,6 +21,7 @@ import {
   ApiUnauthorizedResponse,
   ApiBadRequestResponse,
   ApiHeader,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import UserDto from '../../domain/entities/user/user.dto';
 import CreateUserDto from '../../domain/entities/user/create-user.dto';
@@ -39,11 +40,12 @@ export class UserController {
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Find users' })
+  @ApiBearerAuth()
   @ApiHeader({
     name: 'Authorization',
     description: 'User access token',
   })
+  @ApiOperation({ summary: 'Find users' })
   @ApiOkResponse({ description: 'Success.', type: FindUserDto, isArray: true })
   @ApiNotFoundResponse({ description: 'Not Found.' })
   @ApiBadRequestResponse({ description: 'Bad Request.' })
@@ -56,6 +58,7 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Find user by id' })
   @ApiHeader({
     name: 'Authorization',
@@ -93,6 +96,7 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Update user' })
   @ApiHeader({
     name: 'Authorization',
@@ -113,6 +117,7 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete user' })
   @ApiHeader({
     name: 'Authorization',
