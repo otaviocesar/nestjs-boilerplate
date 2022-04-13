@@ -24,6 +24,8 @@ import {
 } from '@nestjs/swagger';
 import UserDto from '../../domain/entities/user/user.dto';
 import CreateUserDto from '../../domain/entities/user/create-user.dto';
+import FindUserDto from '../../domain/entities/user/find-user.dto';
+import UpdateUserDto from '../../domain/entities/user/update-user.dto';
 
 import { UserServicePort } from '../../domain/ports/primary/user-service.port';
 
@@ -42,12 +44,13 @@ export class UserController {
     name: 'Authorization',
     description: 'User access token',
   })
-  @ApiOkResponse({ description: 'Success.' })
-  @ApiNotFoundResponse({ description: 'No records found.' })
+  @ApiOkResponse({ description: 'Success.', type: FindUserDto, isArray: true })
+  @ApiNotFoundResponse({ description: 'Not Found.' })
+  @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   @Get()
-  async findAll(@Res() request): Promise<UserDto[]> {
+  async findAll(@Res() request): Promise<FindUserDto[]> {
     const users = await this.userServicePort.findAll();
     return request.status(HttpStatus.OK).json(users);
   }
@@ -58,15 +61,16 @@ export class UserController {
     name: 'Authorization',
     description: 'User access token',
   })
-  @ApiOkResponse({ description: 'Success.', type: UserDto })
-  @ApiNotFoundResponse({ description: 'No records found.' })
+  @ApiOkResponse({ description: 'Success.', type: FindUserDto })
+  @ApiNotFoundResponse({ description: 'Not Found.' })
+  @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   @Get(':id')
   public async getById(
     @Res() request,
     @Param('id') id: string,
-  ): Promise<UserDto> {
+  ): Promise<FindUserDto> {
     const user = await this.userServicePort.getById(id);
     return request.status(HttpStatus.OK).json(user);
   }
@@ -76,7 +80,7 @@ export class UserController {
     description: 'The record has been successfully created!',
     type: CreateUserDto,
   })
-  @ApiBadRequestResponse({ description: 'Data entered incorrectly.' })
+  @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   @Post()
@@ -95,16 +99,15 @@ export class UserController {
     description: 'User access token',
   })
   @ApiOkResponse({ description: 'The record has been successfully updated!' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
-  @ApiBadRequestResponse({ description: 'Data entered incorrectly.' })
+  @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   @Put(':id')
   async update(
     @Res() request,
     @Param('id') id: string,
-    @Body() user: UserDto,
-  ): Promise<UserDto> {
+    @Body() user: UpdateUserDto,
+  ): Promise<UpdateUserDto> {
     const userUpdated = await this.userServicePort.update(id, user);
     return request.status(HttpStatus.OK).json(userUpdated);
   }
@@ -116,6 +119,7 @@ export class UserController {
     description: 'User access token',
   })
   @ApiOkResponse({ description: 'The record has been successfully deleted!' })
+  @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   @Delete(':id')

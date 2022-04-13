@@ -30,7 +30,7 @@ export class AuthController {
   @Post('auth/login')
   @ApiOperation({ summary: 'Login' })
   @ApiOkResponse({ description: 'Login successfully done!' })
-  @ApiBadRequestResponse({ description: 'Data entered incorrectly.' })
+  @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   async save(@Res() request, @Body() auth: AuthDto): Promise<AuthDto> {

@@ -1,4 +1,11 @@
-import { ExceptionFilter, Catch, ArgumentsHost, Logger } from '@nestjs/common';
+import {
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  Logger,
+  UnauthorizedException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import BadRequestException from 'src/domain/errors/bad-request.exception';
 
@@ -24,6 +31,18 @@ export class HttpExceptionFilter implements ExceptionFilter<Error> {
       return {
         message: exception.message,
         status: 400,
+      };
+    }
+    if (exception instanceof UnauthorizedException) {
+      return {
+        message: exception.message,
+        status: 403,
+      };
+    }
+    if (exception instanceof NotFoundException) {
+      return {
+        message: exception.message,
+        status: 404,
       };
     }
     Logger.log(exception.stack);
