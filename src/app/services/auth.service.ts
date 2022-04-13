@@ -1,8 +1,7 @@
 import { UserServicePort } from '../../domain/ports/primary/user-service.port';
 import { AuthServicePort } from '../../domain/ports/primary/auth-service.port';
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import BadRequestException from '../../domain/errors/bad-request.exception';
 
 @Injectable()
 export class AuthService implements AuthServicePort {
@@ -16,7 +15,7 @@ export class AuthService implements AuthServicePort {
     if (user && user.getPassword() === userPassword) {
       return user;
     } else {
-      throw new BadRequestException('Invalid Password!');
+      throw new UnauthorizedException('Invalid Password!');
     }
   }
 
