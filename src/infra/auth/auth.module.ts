@@ -24,9 +24,9 @@ import { SECRET_JWT } from '../environments';
     {
       provide: 'AuthServicePort',
       useClass: AuthService,
-    }, 
-    LocalStrategy, 
-    JwtStrategy
+    },
+    LocalStrategy,
+    JwtStrategy,
   ],
 })
 export class AuthModule {}

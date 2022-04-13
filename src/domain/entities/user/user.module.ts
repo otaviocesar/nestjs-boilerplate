@@ -12,7 +12,7 @@ import { UserRepository } from '../../../infra/adapters/repositories/mongodb/use
     {
       provide: 'UserServicePort',
       useClass: UserService,
-    }, 
+    },
     {
       provide: 'UserRepositoryPort',
       useClass: UserRepository,
@@ -22,7 +22,7 @@ import { UserRepository } from '../../../infra/adapters/repositories/mongodb/use
     {
       provide: 'UserServicePort',
       useClass: UserService,
-    }
-],
+    },
+  ],
 })
 export class UserModule {}

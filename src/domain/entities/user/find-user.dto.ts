@@ -1,8 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, MinLength } from 'class-validator';
 
-export default class User {
-  private id?: string;
+export default class FindUserDto {
+  @IsString()
+  @ApiProperty({
+    type: String,
+    example: '62564ced5f6b0efa79a0b1cf',
+    description: 'User id',
+  })
+  private id: string;
 
   @IsString()
   @MinLength(4)
@@ -23,21 +29,9 @@ export default class User {
   })
   private readonly email: string;
 
-  @IsString()
-  @MinLength(4)
-  @ApiProperty({
-    type: String,
-    example: 'password',
-    description: 'User password',
-  })
-  private readonly password: string;
-
-  private createAt: Date;
-
-  constructor(id: string, name: string, email: string, password: string) {
+  constructor(id: string, name: string, email: string) {
     this.id = id;
     this.name = name;
     this.email = email;
-    this.password = password;
   }
 }

@@ -1,6 +1,6 @@
-import User from "../../../domain/entities/user/user.dto";
+import Auth from '../../../domain/entities/auth/auth.dto';
 
 export interface AuthServicePort {
-    validateUser(userEmail: string, userPassword: string): Promise<User>;  
-    login(user: any): void;
+  validateUser(userEmail: string, userPassword: string): Promise<Auth>;
+  login(user: any): void;
 }

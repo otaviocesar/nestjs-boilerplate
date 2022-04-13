@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, MinLength } from 'class-validator';
 
-export default class User {
+export default class CreateUserDto {
   private id?: string;
 
   @IsString()
@@ -39,5 +39,10 @@ export default class User {
     this.name = name;
     this.email = email;
     this.password = password;
+  }
+
+  public setCreateAt(createdAt: Date): this {
+    this.createAt = createdAt;
+    return this;
   }
 }
