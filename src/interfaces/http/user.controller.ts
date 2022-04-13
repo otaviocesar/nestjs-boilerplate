@@ -20,7 +20,6 @@ import {
   ApiForbiddenResponse,
   ApiUnauthorizedResponse,
   ApiBadRequestResponse,
-  ApiHeader,
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import UserDto from '../../domain/entities/user/user.dto';
@@ -40,11 +39,7 @@ export class UserController {
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiHeader({
-    name: 'Authorization',
-    description: 'User access token',
-  })
+  @ApiBearerAuth('Authorization')
   @ApiOperation({ summary: 'Find users' })
   @ApiOkResponse({ description: 'Success.', type: FindUserDto, isArray: true })
   @ApiNotFoundResponse({ description: 'Not Found.' })
@@ -58,12 +53,8 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('Authorization')
   @ApiOperation({ summary: 'Find user by id' })
-  @ApiHeader({
-    name: 'Authorization',
-    description: 'User access token',
-  })
   @ApiOkResponse({ description: 'Success.', type: FindUserDto })
   @ApiNotFoundResponse({ description: 'Not Found.' })
   @ApiBadRequestResponse({ description: 'Bad Request.' })
@@ -96,12 +87,8 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('Authorization')
   @ApiOperation({ summary: 'Update user' })
-  @ApiHeader({
-    name: 'Authorization',
-    description: 'User access token',
-  })
   @ApiOkResponse({ description: 'The record has been successfully updated!' })
   @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
@@ -117,12 +104,8 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('Authorization')
   @ApiOperation({ summary: 'Delete user' })
-  @ApiHeader({
-    name: 'Authorization',
-    description: 'User access token',
-  })
   @ApiOkResponse({ description: 'The record has been successfully deleted!' })
   @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
