@@ -67,14 +67,7 @@ $ npm install
 ## Running the app
 
 ```bash
-# development
-$ npm start
-
-# watch mode
-$ npm start:dev
-
-# production mode
-$ npm start:prod
+$ docker-compose up --build
 ```
 
 ---
@@ -83,13 +76,13 @@ $ npm start:prod
 
 ```bash
 # unit tests
-$ npm test
+$ npm run test:docker
 
 # e2e tests
-$ npm test:e2e
+$ npm run test:e2e:docker
 
 # test coverage
-$ npm test:cov
+$ npm run test:cov:docker
 ```
 ---
 
