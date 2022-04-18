@@ -6,12 +6,11 @@ import { UserEntity } from '../adapters/repositories/mongodb/entities/user.entit
 
 export default class UserMapper {
   public static toDomain(userEntity: UserEntity): User {
-    const user = new User(
-      userEntity.id,
-      userEntity.name,
-      userEntity.email,
-      userEntity.password,
-    );
+    const user = new User();
+    user.setId(userEntity.id);
+    user.setName(userEntity.id);
+    user.setEmail(userEntity.name);
+    user.setPassword(userEntity.password);
     return user;
   }
 
