@@ -4,8 +4,8 @@ import {
   Post,
   Put,
   Delete,
-  Res,
   HttpStatus,
+  HttpCode,
   Body,
   Param,
   UseGuards,
@@ -46,10 +46,11 @@ export class UserController {
   @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @HttpCode(HttpStatus.OK)
   @Get()
-  async findAll(@Res() request): Promise<FindUserDto[]> {
-    const users = await this.userServicePort.findAll();
-    return request.status(HttpStatus.OK).json(users);
+  async findAll(): Promise<FindUserDto[]> {
+    const usersFound = await this.userServicePort.findAll();
+    return usersFound;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -60,13 +61,11 @@ export class UserController {
   @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @HttpCode(HttpStatus.OK)
   @Get(':id')
-  public async getById(
-    @Res() request,
-    @Param('id') id: string,
-  ): Promise<FindUserDto> {
-    const user = await this.userServicePort.getById(id);
-    return request.status(HttpStatus.OK).json(user);
+  public async getById(@Param('id') id: string): Promise<FindUserDto> {
+    const userFound = await this.userServicePort.getById(id);
+    return userFound;
   }
 
   @ApiOperation({ summary: 'Create user' })
@@ -77,13 +76,11 @@ export class UserController {
   @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @HttpCode(HttpStatus.CREATED)
   @Post()
-  async save(
-    @Res() request,
-    @Body() user: CreateUserDto,
-  ): Promise<CreateUserDto> {
+  async save(@Body() user: CreateUserDto): Promise<CreateUserDto> {
     const userCreated = await this.userServicePort.save(user);
-    return request.status(HttpStatus.CREATED).json(userCreated);
+    return userCreated;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -93,14 +90,14 @@ export class UserController {
   @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @HttpCode(HttpStatus.OK)
   @Put(':id')
   async update(
-    @Res() request,
     @Param('id') id: string,
     @Body() user: UpdateUserDto,
   ): Promise<UpdateUserDto> {
     const userUpdated = await this.userServicePort.update(id, user);
-    return request.status(HttpStatus.OK).json(userUpdated);
+    return userUpdated;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -110,9 +107,10 @@ export class UserController {
   @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  async delete(@Res() request, @Param('id') id: string): Promise<UserDto> {
-    const user = await this.userServicePort.delete(id);
-    return request.status(HttpStatus.OK).json(user);
+  async delete(@Param('id') id: string): Promise<UserDto> {
+    const userDeleted = await this.userServicePort.delete(id);
+    return userDeleted;
   }
 }

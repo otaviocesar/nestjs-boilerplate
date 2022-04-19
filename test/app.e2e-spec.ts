@@ -80,4 +80,13 @@ describe('AppController (e2e)', () => {
         .expect(HttpStatus.OK);
     });
   });
+
+  describe('/users (GET)', () => {
+    it('it should return unauthorized if it makes a request without authorization token', () => {
+      return request(app.getHttpServer())
+        .get('/users')
+        .set('Accept', 'application/json')
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+  });
 });

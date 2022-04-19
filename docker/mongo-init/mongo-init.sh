@@ -1,4 +1,4 @@
-echo '################ MONGO ENTRYPOINT START ################';
+echo '################ MONGO ENTRYPOINT START ###################';
  
 mongo -- "$MONGO_INITDB_DATABASE" <<EOF
 
@@ -19,4 +19,4 @@ print('Development database created.');
 
 EOF
 
-echo '################ MONGO ENTRYPOINT END ################';
+echo '################ MONGO ENTRYPOINT END ###################';

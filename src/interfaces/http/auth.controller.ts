@@ -3,7 +3,7 @@ import {
   Controller,
   Post,
   UseGuards,
-  Res,
+  HttpCode,
   HttpStatus,
   Body,
 } from '@nestjs/common';
@@ -27,14 +27,15 @@ export class AuthController {
   ) {}
 
   @UseGuards(LocalAuthGuard)
-  @Post('auth/login')
   @ApiOperation({ summary: 'Login' })
   @ApiOkResponse({ description: 'Login successfully done!', type: AuthDto })
   @ApiBadRequestResponse({ description: 'Bad Request.' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
-  async save(@Res() request, @Body() auth: AuthDto): Promise<AuthDto> {
+  @HttpCode(HttpStatus.OK)
+  @Post('auth/login')
+  async login(@Body() auth: AuthDto): Promise<any> {
     const loggedUser = await this.authServicePort.login(auth);
-    return request.status(HttpStatus.OK).json(loggedUser);
+    return loggedUser;
   }
 }

@@ -17,23 +17,20 @@ export default class UserMapper {
   public static async toCreateDomain(
     userEntity: UserEntity,
   ): Promise<CreateUserDto> {
-    const user = new CreateUserDto(
-      userEntity.id,
-      userEntity.name,
-      userEntity.email,
-    );
-
+    const user = new CreateUserDto();
+    user.setId(userEntity.id);
+    user.setName(userEntity.name);
+    user.setEmail(userEntity.email);
     user.setCreateAt(new Date(userEntity.createAt));
     return user;
   }
 
   public static toUpdateDomain(userEntity: UserEntity): UpdateUserDto {
-    const user = new UpdateUserDto(
-      userEntity.id,
-      userEntity.name,
-      userEntity.email,
-      userEntity.password,
-    );
+    const user = new UpdateUserDto();
+    user.setId(userEntity.id);
+    user.setName(userEntity.name);
+    user.setEmail(userEntity.email);
+    user.setPassword(userEntity.password);
     return user;
   }
 

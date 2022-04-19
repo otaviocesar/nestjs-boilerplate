@@ -8,7 +8,7 @@ export default class FindUserDto {
     example: '62564ced5f6b0efa79a0b1cf',
     description: 'User id',
   })
-  private id: string;
+  private readonly id: string;
 
   @IsString()
   @MinLength(4)
@@ -33,5 +33,17 @@ export default class FindUserDto {
     this.id = id;
     this.name = name;
     this.email = email;
+  }
+
+  public getId(): string {
+    return this.id;
+  }
+
+  public getName(): string {
+    return this.name;
+  }
+
+  public getEmail(): string {
+    return this.email;
   }
 }

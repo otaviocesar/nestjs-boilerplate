@@ -10,6 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
+    "start:docker": "docker-compose up mongo nestjs-aliansce-node --build",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -19,9 +20,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:docker": "docker-compose -f docker-compose.test.yml up --abort-on-container-exit",
-    "test:e2e:docker": "docker-compose -f docker-compose.e2e.yml up --abort-on-container-exit",
-    "test:cov:docker": "docker-compose -f docker-compose.cov.yml up --abort-on-container-exit"
+    "test:docker": "docker-compose up mongo nestjs-aliansce-node-test --abort-on-container-exit",
+    "test:e2e:docker": "docker-compose up mongo nestjs-aliansce-node-e2e --abort-on-container-exit",
+    "test:cov:docker": "docker-compose up mongo nestjs-aliansce-node-cov --abort-on-container-exit"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -34,6 +35,7 @@
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.0",
+    "express": "^4.17.3",
     "mongoose": "^6.2.9",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
@@ -74,14 +76,11 @@
       "json",
       "ts"
     ],
-    "rootDir": "test",
+    "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }
