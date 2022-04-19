@@ -37,7 +37,7 @@ export class HttpExceptionFilter implements ExceptionFilter<Error> {
     if (exception instanceof UnauthorizedException) {
       return {
         message: exception.message,
-        status: 403,
+        status: 401,
       };
     }
     if (exception instanceof NotFoundException) {

@@ -16,6 +16,7 @@ import UserMapper from '../../../mappers/user.mapper';
 import AuthMapper from '../../../mappers/auth.mapper';
 import { UserRepositoryPort } from '../../../../domain/ports/secondary/user-repository.port';
 import * as bcrypt from 'bcryptjs';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class UserRepository implements UserRepositoryPort {
@@ -42,30 +43,42 @@ export class UserRepository implements UserRepositoryPort {
   }
 
   public async findById(userId: string): Promise<FindUserDto> {
-    const user = await this.userModel.findById(userId);
-    if (!user) {
+    if (mongoose.Types.ObjectId.isValid(userId)) {
+      const user = await this.userModel.findById(userId);
+      if (!user) {
+        throw new NotFoundException();
+      }
+      return UserMapper.toFindDomain(user);
+    } else {
       throw new NotFoundException();
     }
-    return UserMapper.toFindDomain(user);
   }
 
   public async delete(userId: string): Promise<User> {
-    const userDeleted = await this.userModel.findByIdAndDelete(userId);
-    if (!userDeleted) {
+    if (mongoose.Types.ObjectId.isValid(userId)) {
+      const userDeleted = await this.userModel.findByIdAndDelete(userId);
+      if (!userDeleted) {
+        throw new NotFoundException();
+      }
+      return UserMapper.toDomain(userDeleted);
+    } else {
       throw new NotFoundException();
     }
-    return UserMapper.toDomain(userDeleted);
   }
 
   public async update(
     userId: string,
     user: UpdateUserDto,
   ): Promise<UpdateUserDto> {
-    const userUpdated = await this.userModel.findByIdAndUpdate(userId, user);
-    if (!userUpdated) {
+    if (mongoose.Types.ObjectId.isValid(userId)) {
+      const userUpdated = await this.userModel.findByIdAndUpdate(userId, user);
+      if (!userUpdated) {
+        throw new NotFoundException();
+      }
+      return UserMapper.toUpdateDomain(userUpdated);
+    } else {
       throw new NotFoundException();
     }
-    return UserMapper.toUpdateDomain(userUpdated);
   }
 
   public async findByEmail(email: string): Promise<Auth> {

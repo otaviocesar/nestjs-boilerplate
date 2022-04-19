@@ -11,7 +11,7 @@ export default class CreateUserDto {
     example: 'Name',
     description: 'User name',
   })
-  private readonly name: string;
+  private name: string;
 
   @IsEmail()
   @IsString()
@@ -21,7 +21,7 @@ export default class CreateUserDto {
     example: 'email@dominio.com',
     description: 'User email',
   })
-  private readonly email: string;
+  private email: string;
 
   @IsString()
   @MinLength(4)
@@ -34,10 +34,43 @@ export default class CreateUserDto {
 
   private createAt: Date;
 
-  constructor(id: string, name: string, email: string) {
+  constructor(user?: Partial<CreateUserDto>) {
+    this.id = user?.getId();
+    this.name = user?.getName();
+    this.email = user?.getEmail();
+    this.password = user?.getPassword();
+  }
+
+  public getId(): string {
+    return this.id;
+  }
+
+  public setId(id: string) {
     this.id = id;
-    this.name = name;
+  }
+
+  public getEmail(): string {
+    return this.email;
+  }
+
+  public setEmail(email: string) {
     this.email = email;
+  }
+
+  public getName(): string {
+    return this.name;
+  }
+
+  public setName(name: string) {
+    this.name = name;
+  }
+
+  public getPassword(): string {
+    return this.password;
+  }
+
+  public setPassword(password: string) {
+    this.password = password;
   }
 
   public setCreateAt(createdAt: Date): this {
