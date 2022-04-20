@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:docker": "docker-compose up mongo nestjs-aliansce-node --build",
+    "start:docker": "docker-compose up --build mongo nestjs-aliansce-node",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
