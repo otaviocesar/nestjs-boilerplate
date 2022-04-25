@@ -41,5 +41,5 @@ lerna-debug.log*
 #Docker Local
 /docker/local
 
-#Sensitive Data
-constants.ts
+#Snyk
+.dccache

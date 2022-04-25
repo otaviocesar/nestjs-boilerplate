@@ -1,22 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from '../../interfaces/http/user.controller';
-import { UserService } from '../../app/services/user.service';
-import { UserRepository } from '../../infra/adapters/repositories/mongodb/user.repository';
-import UserDto from '../../domain/entities/user/user.dto';
+import { UserController } from '../../../src/interfaces/http/user.controller';
+import { UserService } from '../../../src/app/services/user.service';
+import { UserRepository } from '../../../src/infra/adapters/repositories/mongodb/user.repository';
+import UserDto from '../../../src/domain/entities/user/user.dto';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema } from '../../infra/adapters/repositories/mongodb/schemas/user.schema';
-import { MONGO_URL } from '../../infra/environments/index';
+import { UserSchema } from '../../../src/infra/adapters/repositories/mongodb/schemas/user.schema';
+import { MONGO_URL } from '../../../src/infra/environments/index';
 import { v4 as uuidv4 } from 'uuid';
-import CreateUserDto from '../../domain/entities/user/create-user.dto';
-import UpdateUserDto from '../../domain/entities/user/update-user.dto';
+import UserFactory from '../../../src/infra/factories/user.factory';
 import { NotFoundException } from '@nestjs/common';
 
-const mockUser = new CreateUserDto();
-mockUser.setName('Nome');
-mockUser.setEmail(uuidv4() + '@dominio.com');
-mockUser.setPassword('password');
-
-const mockUpdateUser = new UpdateUserDto();
+const mockUser = UserFactory.validUserToCreate();
 
 const userList: UserDto[] = [];
 
@@ -83,10 +77,7 @@ describe('UserController', () => {
     mockUser.setEmail(uuidv4() + '@dominio.com');
     const savedUser = await userController.save(mockUser);
     const userId = savedUser?.getId();
-    mockUpdateUser.setId(userId);
-    mockUpdateUser.setName('New Name');
-    mockUpdateUser.setEmail(uuidv4() + '@dominio.com');
-    mockUpdateUser.setPassword('NewPassword');
+    const mockUpdateUser = UserFactory.validUserToUpdate(userId);
 
     const updatedUser = await userController.update(userId, mockUpdateUser);
 

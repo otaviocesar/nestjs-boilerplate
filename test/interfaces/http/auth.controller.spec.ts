@@ -1,23 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
-import { AuthService } from '../../app/services/auth.service';
-import { UserRepository } from '../../infra/adapters/repositories/mongodb/user.repository';
+import { AuthController } from '../../../src/interfaces/http/auth.controller';
+import { AuthService } from '../../../src/app/services/auth.service';
+import { UserRepository } from '../../../src/infra/adapters/repositories/mongodb/user.repository';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema } from '../../infra/adapters/repositories/mongodb/schemas/user.schema';
-import { MONGO_URL } from '../../infra/environments/index';
-import { v4 as uuidv4 } from 'uuid';
-import AuthDto from '../../domain/entities/auth/auth.dto';
-import { LocalStrategy } from '../../infra/auth/jwt/local.strategy';
-import { JwtStrategy } from '../../infra/auth/jwt/jwt.strategy';
-import CreateUserDto from '../../domain/entities/user/create-user.dto';
-import { UserController } from '../../interfaces/http/user.controller';
+import { UserSchema } from '../../../src/infra/adapters/repositories/mongodb/schemas/user.schema';
+import { MONGO_URL } from '../../../src/infra/environments/index';
+import AuthDto from '../../../src/domain/entities/auth/auth.dto';
+import { LocalStrategy } from '../../../src/infra/auth/jwt/local.strategy';
+import { JwtStrategy } from '../../../src/infra/auth/jwt/jwt.strategy';
+import UserFactory from '../../../src/infra/factories/user.factory';
+import { UserController } from '../../../src/interfaces/http/user.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { UserService } from '../../app/services/user.service';
-import { SECRET_JWT } from '../../infra/environments';
+import { UserService } from '../../../src/app/services/user.service';
+import { SECRET_JWT } from '../../../src/infra/environments';
 
 const mockAuth = new AuthDto();
-const mockUser = new CreateUserDto();
+const mockUser = UserFactory.validUserToCreate();
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -62,11 +61,6 @@ describe('AuthController', () => {
   });
 
   it('it should create a user and log in', async () => {
-    const email = uuidv4() + '@dominio.com';
-    const password = uuidv4();
-    mockUser.setName('Name');
-    mockUser.setEmail(email);
-    mockUser.setPassword(password);
     const savedUser = await userController.save(mockUser);
 
     expect(savedUser).toEqual({
@@ -74,11 +68,11 @@ describe('AuthController', () => {
       createAt: expect.any(Date),
       password: undefined,
       name: mockUser.getName(),
-      email: email,
+      email: mockUser.getEmail(),
     });
 
-    mockAuth.setEmail(email);
-    mockAuth.setPassword(password);
+    mockAuth.setEmail(mockUser.getEmail());
+    mockAuth.setPassword(mockUser.getPassword());
 
     const loggedUser = await authController.login(mockAuth);
 

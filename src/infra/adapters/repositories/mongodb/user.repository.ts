@@ -32,7 +32,8 @@ export class UserRepository implements UserRepositoryPort {
 
   public async save(user: CreateUserDto): Promise<CreateUserDto> {
     let userCreated = new this.userModel(user);
-    const hashedPassword = await bcrypt.hash(userCreated.password, 10);
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(userCreated.password, salt);
     if (await this.userModel.findOne({ email: userCreated.email })) {
       throw new ConflictException('User already exist!');
     }
