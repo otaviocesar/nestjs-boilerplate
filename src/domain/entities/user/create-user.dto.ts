@@ -34,11 +34,11 @@ export default class CreateUserDto {
 
   private createAt: Date;
 
-  constructor(user?: Partial<CreateUserDto>) {
-    this.id = user?.getId();
-    this.name = user?.getName();
-    this.email = user?.getEmail();
-    this.password = user?.getPassword();
+  constructor(id?: string, name?: string, email?: string, password?: string) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.password = password;
   }
 
   public getId(): string {

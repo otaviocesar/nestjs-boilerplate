@@ -1,18 +1,17 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from '../../../src/interfaces/http/user.controller';
 import { UserService } from '../../../src/app/services/user.service';
 import { UserRepository } from '../../../src/infra/adapters/repositories/mongodb/user.repository';
+import UserFactory from '../../../src/infra/factories/user.factory';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from '../../../src/infra/adapters/repositories/mongodb/schemas/user.schema';
 import { MONGO_URL } from '../../../src/infra/environments/index';
 import { v4 as uuidv4 } from 'uuid';
-import UserFactory from '../../../src/infra/factories/user.factory';
-import { NotFoundException } from '@nestjs/common';
 
 const mockUser = UserFactory.validUserToCreate();
 
-describe('UserController', () => {
-  let userController: UserController;
+describe('UserService', () => {
+  let userService: UserService;
   jest.setTimeout(20000);
 
   beforeAll(async () => {
@@ -21,7 +20,6 @@ describe('UserController', () => {
         MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
         MongooseModule.forRoot(MONGO_URL),
       ],
-      controllers: [UserController],
       providers: [
         {
           provide: 'UserServicePort',
@@ -34,15 +32,15 @@ describe('UserController', () => {
       ],
     }).compile();
 
-    userController = module.get<UserController>(UserController);
+    userService = module.get('UserServicePort');
   });
 
-  it('it should be defined', () => {
-    expect(userController).toBeDefined();
+  it('should be defined', () => {
+    expect(userService).toBeDefined();
   });
 
   it('it should save a user', async () => {
-    const savedUser = await userController.save(mockUser);
+    const savedUser = await userService.save(mockUser);
 
     expect(savedUser).toEqual({
       id: expect.any(String),
@@ -54,28 +52,26 @@ describe('UserController', () => {
   });
 
   it('it should getById a existing user', async () => {
-    const allUsers = await userController.findAll();
+    const allUsers = await userService.findAll();
     const firstUser = allUsers[0];
     const userId = firstUser?.getId();
-    const userParams = { id: userId };
 
-    const userFound = await userController.getById(userParams);
+    const userFound = await userService.getById(userId);
 
     expect(userFound).toMatchObject({ name: firstUser?.getName() });
   });
 
   it('it should update a existing user', async () => {
     mockUser.setEmail(uuidv4() + '@dominio.com');
-    const savedUser = await userController.save(mockUser);
+    const savedUser = await userService.save(mockUser);
     const userId = savedUser?.getId();
-    const userParams = { id: userId };
     const mockUpdateUser = UserFactory.validUserToUpdate(userId);
 
-    const updatedUser = await userController.update(userParams, mockUpdateUser);
+    const updatedUser = await userService.update(userId, mockUpdateUser);
 
     expect(updatedUser).toMatchObject({ id: userId });
 
-    const updatedUserFound = await userController.getById(userParams);
+    const updatedUserFound = await userService.getById(userId);
 
     expect(updatedUserFound).toMatchObject({
       id: mockUpdateUser.getId(),
@@ -86,22 +82,21 @@ describe('UserController', () => {
 
   it('it should delete a existing user', async () => {
     mockUser.setEmail(uuidv4() + '@dominio.com');
-    const savedUser = await userController.save(mockUser);
+    const savedUser = await userService.save(mockUser);
     const userId = savedUser?.getId();
-    const userParams = { id: userId };
 
-    const deletedUser = await userController.delete(userParams);
+    const deletedUser = await userService.delete(userId);
 
     expect(deletedUser).toMatchObject({ id: userId });
 
-    await expect(userController.getById(userParams)).rejects.toEqual(
+    await expect(userService.getById(userId)).rejects.toEqual(
       new NotFoundException({ message: 'Not Found', status: 404 }),
     );
   });
 
   it('it should return Not Found if there is no user with the given id', async () => {
     const userInvalidId = uuidv4();
-    await expect(userController.getById(userInvalidId)).rejects.toEqual(
+    await expect(userService.getById(userInvalidId)).rejects.toEqual(
       new NotFoundException({ message: 'Not Found', status: 404 }),
     );
   });

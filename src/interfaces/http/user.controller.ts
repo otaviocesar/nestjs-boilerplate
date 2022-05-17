@@ -26,6 +26,7 @@ import UserDto from '../../domain/entities/user/user.dto';
 import CreateUserDto from '../../domain/entities/user/create-user.dto';
 import FindUserDto from '../../domain/entities/user/find-user.dto';
 import UpdateUserDto from '../../domain/entities/user/update-user.dto';
+import UserParamDto from '../../domain/entities/user/user-param.dto';
 
 import { UserServicePort } from '../../domain/ports/primary/user-service.port';
 
@@ -63,8 +64,8 @@ export class UserController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  public async getById(@Param('id') id: string): Promise<FindUserDto> {
-    const userFound = await this.userServicePort.getById(id);
+  public async getById(@Param() params: UserParamDto): Promise<FindUserDto> {
+    const userFound = await this.userServicePort.getById(params.id);
     return userFound;
   }
 
@@ -93,10 +94,10 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @Put(':id')
   async update(
-    @Param('id') id: string,
+    @Param() params: UserParamDto,
     @Body() user: UpdateUserDto,
   ): Promise<UpdateUserDto> {
-    const userUpdated = await this.userServicePort.update(id, user);
+    const userUpdated = await this.userServicePort.update(params.id, user);
     return userUpdated;
   }
 
@@ -109,8 +110,8 @@ export class UserController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<UserDto> {
-    const userDeleted = await this.userServicePort.delete(id);
+  async delete(@Param() params: UserParamDto): Promise<UserDto> {
+    const userDeleted = await this.userServicePort.delete(params.id);
     return userDeleted;
   }
 }

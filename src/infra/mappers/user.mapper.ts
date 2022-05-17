@@ -8,8 +8,8 @@ export default class UserMapper {
   public static toDomain(userEntity: UserEntity): User {
     const user = new User();
     user.setId(userEntity.id);
-    user.setName(userEntity.id);
-    user.setEmail(userEntity.name);
+    user.setName(userEntity.name);
+    user.setEmail(userEntity.email);
     user.setPassword(userEntity.password);
     return user;
   }
@@ -17,20 +17,22 @@ export default class UserMapper {
   public static async toCreateDomain(
     userEntity: UserEntity,
   ): Promise<CreateUserDto> {
-    const user = new CreateUserDto();
-    user.setId(userEntity.id);
-    user.setName(userEntity.name);
-    user.setEmail(userEntity.email);
+    const user = new CreateUserDto(
+      userEntity.id,
+      userEntity.name,
+      userEntity.email,
+    );
     user.setCreateAt(new Date(userEntity.createAt));
     return user;
   }
 
   public static toUpdateDomain(userEntity: UserEntity): UpdateUserDto {
-    const user = new UpdateUserDto();
-    user.setId(userEntity.id);
-    user.setName(userEntity.name);
-    user.setEmail(userEntity.email);
-    user.setPassword(userEntity.password);
+    const user = new UpdateUserDto(
+      userEntity.id,
+      userEntity.name,
+      userEntity.email,
+      userEntity.password,
+    );
     return user;
   }
 
@@ -44,9 +46,9 @@ export default class UserMapper {
   }
 
   public static toFindDomains(usersEntity: UserEntity[]): FindUserDto[] {
-    const users = new Array<FindUserDto>();
+    const users = [];
     usersEntity.forEach((userEntity) => {
-      const user = this.toFindDomain(userEntity);
+      const user = UserMapper.toFindDomain(userEntity);
       users.push(user);
     });
     return users;

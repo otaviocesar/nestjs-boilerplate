@@ -24,9 +24,9 @@ export default class AuthDto {
   })
   private password: string;
 
-  constructor(user?: Partial<AuthDto>) {
-    this.email = user?.getEmail();
-    this.password = user?.getPassword();
+  constructor(email?: string, password?: string) {
+    this.email = email;
+    this.password = password;
   }
 
   public getId(): string {

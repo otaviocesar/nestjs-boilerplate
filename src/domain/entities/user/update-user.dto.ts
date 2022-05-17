@@ -37,11 +37,11 @@ export default class UpdateUserDto {
 
   private createAt: Date;
 
-  constructor(user?: Partial<UpdateUserDto>) {
-    this.id = user?.getId();
-    this.name = user?.getName();
-    this.email = user?.getName();
-    this.password = user?.getPassword();
+  constructor(id?: string, name?: string, email?: string, password?: string) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.password = password;
   }
 
   public getId(): string {

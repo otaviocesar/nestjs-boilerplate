@@ -26,8 +26,8 @@ services:
     depends_on:
       - "mongo"
 
-  nestjs-aliansce-node-e2e:
-    container_name: aliansce-node-server-e2e
+  nestjs-aliansce-node-integration:
+    container_name: aliansce-node-server-integration
     build:
         context: .
         target: development
@@ -44,7 +44,7 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules    
-    command: npm run test:e2e
+    command: npm run test:integration
     networks:
       - nesjs-network
     depends_on:

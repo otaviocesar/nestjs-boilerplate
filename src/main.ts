@@ -1,3 +1,4 @@
+import { ValidationPipe, ValidationPipeOptions } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
@@ -22,6 +23,10 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  const validationPipeOptions: ValidationPipeOptions = {
+    forbidUnknownValues: true,
+  };
+  app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(PORT);
 }

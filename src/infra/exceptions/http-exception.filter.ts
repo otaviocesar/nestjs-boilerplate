@@ -1,14 +1,5 @@
-import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  Logger,
-  UnauthorizedException,
-  NotFoundException,
-  ConflictException,
-} from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
-import BadRequestException from 'src/domain/errors/bad-request.exception';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter<Error> {
@@ -16,46 +7,28 @@ export class HttpExceptionFilter implements ExceptionFilter<Error> {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+    const exceptionString = JSON.stringify(exception);
 
-    const { message, status } = this.isBusinessException(exception);
+    const { message, status } = this.isBusinessException(
+      exception,
+      exceptionString,
+    );
 
     response.status(status).json({
-      message,
+      message: message,
       statusCode: status,
       timestamp: new Date().toISOString(),
       path: request.url,
     });
   }
 
-  public isBusinessException(exception: Error): any {
-    if (exception instanceof BadRequestException) {
-      return {
-        message: exception.message,
-        status: 400,
-      };
-    }
-    if (exception instanceof UnauthorizedException) {
-      return {
-        message: exception.message,
-        status: 401,
-      };
-    }
-    if (exception instanceof NotFoundException) {
-      return {
-        message: exception.message,
-        status: 404,
-      };
-    }
-    if (exception instanceof ConflictException) {
-      return {
-        message: exception.message,
-        status: 409,
-      };
-    }
+  public isBusinessException(exception: Error, exceptionString: string): any {
     Logger.log(exception.stack);
+    Logger.log(exceptionString);
+    const exceptionJson = JSON.parse(exceptionString);
     return {
-      message: 'Internal server error',
-      status: 500,
+      message: exceptionJson.response.message,
+      status: exceptionJson.response.statusCode,
     };
   }
 }

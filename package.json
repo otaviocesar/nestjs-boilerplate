@@ -19,9 +19,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/integration/jest-e2e.json",
+    "test:integration": "jest --config ./test/integration/jest.json",
     "test:docker": "docker-compose up mongo nestjs-aliansce-node-test --abort-on-container-exit",
-    "test:e2e:docker": "docker-compose up mongo nestjs-aliansce-node-e2e --abort-on-container-exit",
+    "test:integration:docker": "docker-compose up mongo nestjs-aliansce-node-integration --abort-on-container-exit",
     "test:cov:docker": "docker-compose up mongo nestjs-aliansce-node-cov --abort-on-container-exit"
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.2.1",
     "bcryptjs": "^2.4.3",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",

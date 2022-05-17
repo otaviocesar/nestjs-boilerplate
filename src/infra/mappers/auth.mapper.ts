@@ -3,9 +3,7 @@ import { UserEntity } from '../adapters/repositories/mongodb/entities/user.entit
 
 export default class AuthMapper {
   public static toDomain(userEntity: UserEntity): Auth {
-    const user = new Auth();
-    user.setEmail(userEntity.email);
-    user.setPassword(userEntity.password);
+    const user = new Auth(userEntity.email, userEntity.password);
     return user;
   }
 }

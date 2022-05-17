@@ -78,8 +78,8 @@ $ npm run start:docker
 # unit tests
 $ npm run test:docker
 
-# e2e tests
-$ npm run test:e2e:docker
+# integration tests
+$ npm run test:integration:docker
 
 # test coverage
 $ npm run test:cov:docker

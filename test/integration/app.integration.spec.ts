@@ -6,7 +6,7 @@ import * as jwt from 'jsonwebtoken';
 import UserFactory from '../../src/infra/factories/user.factory';
 import { SECRET_JWT } from '../../src/infra/environments/index';
 
-describe('AppController (e2e)', () => {
+describe('AppController (integration)', () => {
   let app: INestApplication;
   jest.setTimeout(20000);
 
