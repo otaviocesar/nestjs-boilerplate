@@ -23,8 +23,6 @@ services:
     command: npm run start:dev
     networks:
       - nesjs-network
-    depends_on:
-      - "mongo"
 
   nestjs-aliansce-node-integration:
     container_name: aliansce-node-server-integration
@@ -47,8 +45,6 @@ services:
     command: npm run test:integration
     networks:
       - nesjs-network
-    depends_on:
-      - "mongo"    
 
   nestjs-aliansce-node-test:
     container_name: aliansce-node-server-test
@@ -71,8 +67,6 @@ services:
     command: npm run test
     networks:
       - nesjs-network
-    depends_on:
-      - "mongo"  
 
   nestjs-aliansce-node-cov:
     container_name: aliansce-node-server-cov
@@ -93,25 +87,6 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules    
     command: npm run test:cov
-    networks:
-      - nesjs-network
-    depends_on:
-      - "mongo"
-
-  mongo:
-    container_name: aliansce-mongo-server
-    image: mongo
-    environment:
-      MONGO_INITDB_ROOT_DATABASE: root
-      MONGO_INITDB_DATABASE: ${DATABASE_NAME}
-      MONGO_INITDB_ROOT_USERNAME: ${DATABASE_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${DATABASE_PASSWORD}
-    ports:
-      - "${DATABASE_PORT}:${DATABASE_PORT}"
-    volumes:
-      - ./docker/mongo-init:/docker-entrypoint-initdb.d/:ro
-      - ./docker/local/volumes/mongodb:/data/db
-    restart: unless-stopped
     networks:
       - nesjs-network
 

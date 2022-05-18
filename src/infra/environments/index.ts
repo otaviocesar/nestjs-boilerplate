@@ -16,4 +16,16 @@ const MONGO_URL =
   process.env.MONGO_URL ||
   `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}?retryWrites=true&w=majority`;
 
-export { NODE_ENV, PORT, MONGO_URL, SECRET_JWT };
+const GATEWAY_URL = process.env.GATEWAY_URL;
+const GATEWAY_CLIENT_ID = process.env.GATEWAY_CLIENT_ID;
+const GATEWAY_ACCESS_TOKEN = process.env.GATEWAY_ACCESS_TOKEN;
+
+export {
+  NODE_ENV,
+  PORT,
+  MONGO_URL,
+  SECRET_JWT,
+  GATEWAY_URL,
+  GATEWAY_CLIENT_ID,
+  GATEWAY_ACCESS_TOKEN,
+};

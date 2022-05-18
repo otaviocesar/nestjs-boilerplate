@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:docker": "docker-compose up --build mongo nestjs-aliansce-node",
+    "start:docker": "docker-compose up --build nestjs-aliansce-node",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -20,11 +20,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:integration": "jest --config ./test/integration/jest.json",
-    "test:docker": "docker-compose up mongo nestjs-aliansce-node-test --abort-on-container-exit",
-    "test:integration:docker": "docker-compose up mongo nestjs-aliansce-node-integration --abort-on-container-exit",
-    "test:cov:docker": "docker-compose up mongo nestjs-aliansce-node-cov --abort-on-container-exit"
+    "test:docker": "docker-compose up nestjs-aliansce-node-test --abort-on-container-exit",
+    "test:integration:docker": "docker-compose up nestjs-aliansce-node-integration --abort-on-container-exit",
+    "test:cov:docker": "docker-compose up nestjs-aliansce-node-cov --abort-on-container-exit"
   },
   "dependencies": {
+    "@nestjs/axios": "0.0.7",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/jwt": "^8.0.0",
