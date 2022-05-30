@@ -1,8 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { UserServicePort } from '../../domain/ports/primary/user-service.port';
 
-import CreateUserDto from '../../domain/entities/user/create-user.dto';
-import UpdateUserDto from '../../domain/entities/user/update-user.dto';
+import UserDto from '../../domain/entities/user/user.dto';
 import { UserRepositoryPort } from '../../domain/ports/secondary/user-repository.port';
 
 @Injectable()
@@ -12,7 +11,7 @@ export class UserService implements UserServicePort {
     private userRepositoryPort: UserRepositoryPort,
   ) {}
 
-  async save(user: CreateUserDto): Promise<CreateUserDto> {
+  async save(user: UserDto): Promise<UserDto> {
     return this.userRepositoryPort.save(user);
   }
 
@@ -24,7 +23,7 @@ export class UserService implements UserServicePort {
     return this.userRepositoryPort.findById(id);
   }
 
-  async update(id: string, user: UpdateUserDto) {
+  async update(id: string, user: UserDto) {
     return this.userRepositoryPort.update(id, user);
   }
 

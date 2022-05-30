@@ -7,7 +7,6 @@ import {
   HttpStatus,
   Body,
 } from '@nestjs/common';
-import { LocalAuthGuard } from '../../infra/auth/jwt/local-auth.guard';
 import {
   ApiTags,
   ApiOperation,
@@ -18,6 +17,8 @@ import {
 } from '@nestjs/swagger';
 import { AuthServicePort } from '../../domain/ports/primary/auth-service.port';
 import AuthDto from '../../domain/entities/auth/auth.dto';
+import { LocalAuthGuard } from '../../infra/auth/jwt/local-auth.guard';
+import { CustomValidationPipe } from '../../infra/exceptions/validation.pipe';
 
 @ApiTags('login')
 @Controller()
@@ -34,8 +35,7 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   @HttpCode(HttpStatus.OK)
   @Post('auth/login')
-  async login(@Body() auth: AuthDto): Promise<any> {
-    const loggedUser = await this.authServicePort.login(auth);
-    return loggedUser;
+  async login(@Body(new CustomValidationPipe()) auth: AuthDto): Promise<any> {
+    return this.authServicePort.login(auth);
   }
 }

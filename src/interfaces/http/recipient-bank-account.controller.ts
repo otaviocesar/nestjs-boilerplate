@@ -5,28 +5,28 @@ import {
   Body,
   Headers,
   Inject,
-  Patch,
+  Post,
 } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
-  ApiOkResponse,
   ApiForbiddenResponse,
   ApiUnauthorizedResponse,
   ApiBadRequestResponse,
+  ApiCreatedResponse,
   ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
-import PatchAllRecipientDto from '../../domain/entities/recipient/patch-all-recipient.dto';
 
 import { RecipientServicePort } from '../../domain/ports/primary/recipient-service.port';
 import RecipientHeaderDto from '../../domain/entities/recipient/recipient-header.dto';
-import ResponseSucessDto from '../../domain/entities/recipient/response-success.dto';
+import PostRecipientDto from '../../domain/entities/recipient/post-recipient.dto';
 import { CustomValidationPipe } from '../../infra/exceptions/validation.pipe';
+import ResponseSucessDto from '../../domain/entities/recipient/response-success.dto';
 import ResponseErrorDto from '../../domain/entities/recipient/response-error.dto';
 
 @ApiTags('recipients')
-@Controller('recipients')
-export class RecipientController {
+@Controller('recipient-bank-accounts')
+export class RecipientBankAccountController {
   constructor(
     @Inject('RecipientServicePort')
     private recipientServicePort: RecipientServicePort,
@@ -34,10 +34,10 @@ export class RecipientController {
 
   @ApiOperation({
     summary:
-      'Updates the bank account of all recipients associated with the cpfCnpj provided if there is a valid account and a fake account among them.',
+      'Create bank account and updates all recipients associated with the cpfCnpj provided.',
   })
-  @ApiOkResponse({
-    description: 'Success.',
+  @ApiCreatedResponse({
+    description: 'Created.',
     type: ResponseSucessDto,
   })
   @ApiBadRequestResponse({
@@ -53,12 +53,12 @@ export class RecipientController {
     description: 'Internal Server Error.',
     type: ResponseErrorDto,
   })
-  @HttpCode(HttpStatus.OK)
-  @Patch()
-  async patch(
-    @Body(new CustomValidationPipe()) recipient: PatchAllRecipientDto,
+  @HttpCode(HttpStatus.CREATED)
+  @Post()
+  async post(
+    @Body(new CustomValidationPipe()) recipient: PostRecipientDto,
     @Headers() headers: RecipientHeaderDto,
   ): Promise<any> {
-    return this.recipientServicePort.patchAll(headers, recipient);
+    return this.recipientServicePort.post(headers, recipient);
   }
 }

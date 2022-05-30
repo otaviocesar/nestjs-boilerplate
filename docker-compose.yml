@@ -1,18 +1,18 @@
 version: "3.7"
  
 services:
-  nestjs-aliansce-node:
-    container_name: aliansce-node-server
+  nestjs-node:
+    container_name: node-server
     build:
         context: .
         target: development
         dockerfile: Dockerfile-dev
         args:
-          - NODE_ENV=${NODE_ENV}    
+          - NODE_ENV=${NODE_ENV}  
     environment:
       SERVICE_DB_HOST: ${DATABASE_HOST}:${DATABASE_PORT}
       SERVICE_DB_USER: ${DATABASE_USERNAME}
-      SERVICE_DB_PASSWORD: ${DATABASE_PASSWORD}
+      SERVICE_DB_PASSWORD: ${DATABASE_PASSWORD}          
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     tty: true   
@@ -21,72 +21,6 @@ services:
       - /usr/src/app/node_modules    
     restart: unless-stopped
     command: npm run start:dev
-    networks:
-      - nesjs-network
-
-  nestjs-aliansce-node-integration:
-    container_name: aliansce-node-server-integration
-    build:
-        context: .
-        target: development
-        dockerfile: Dockerfile-dev
-        args:
-          - NODE_ENV=${NODE_ENV}    
-    environment:
-      SERVICE_DB_HOST: ${DATABASE_HOST}:${DATABASE_PORT}
-      SERVICE_DB_USER: ${DATABASE_USERNAME}
-      SERVICE_DB_PASSWORD: ${DATABASE_PASSWORD}
-    ports:
-      - "${SERVER_PORT}:${SERVER_PORT}"
-    tty: true   
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules    
-    command: npm run test:integration
-    networks:
-      - nesjs-network
-
-  nestjs-aliansce-node-test:
-    container_name: aliansce-node-server-test
-    build:
-        context: .
-        target: development
-        dockerfile: Dockerfile-dev
-        args:
-          - NODE_ENV=${NODE_ENV}    
-    environment:
-      SERVICE_DB_HOST: ${DATABASE_HOST}:${DATABASE_PORT}
-      SERVICE_DB_USER: ${DATABASE_USERNAME}
-      SERVICE_DB_PASSWORD: ${DATABASE_PASSWORD}
-    ports:
-      - "${SERVER_PORT}:${SERVER_PORT}"
-    tty: true   
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules    
-    command: npm run test
-    networks:
-      - nesjs-network
-
-  nestjs-aliansce-node-cov:
-    container_name: aliansce-node-server-cov
-    build:
-        context: .
-        target: development
-        dockerfile: Dockerfile-dev
-        args:
-          - NODE_ENV=${NODE_ENV}    
-    environment:
-      SERVICE_DB_HOST: ${DATABASE_HOST}:${DATABASE_PORT}
-      SERVICE_DB_USER: ${DATABASE_USERNAME}
-      SERVICE_DB_PASSWORD: ${DATABASE_PASSWORD}
-    ports:
-      - "${SERVER_PORT}:${SERVER_PORT}"
-    tty: true  
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules    
-    command: npm run test:cov
     networks:
       - nesjs-network
 

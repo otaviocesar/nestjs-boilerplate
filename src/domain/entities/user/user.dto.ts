@@ -72,4 +72,9 @@ export default class User {
   public setPassword(password: string) {
     this.password = password;
   }
+
+  public setCreateAt(createdAt: Date): this {
+    this.createAt = createdAt;
+    return this;
+  }
 }

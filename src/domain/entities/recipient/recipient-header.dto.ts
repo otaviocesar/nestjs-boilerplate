@@ -5,8 +5,18 @@ export default class RecipientHeaderDto {
   @IsString()
   @ApiProperty({
     type: String,
-    example: 'teste',
-    description: 'teste',
+    example: 'PARQUE_D_PEDRO_SHOPPING',
+    description: 'Mall Domain',
   })
-  public empreendimento: string;
+  public mall: string;
+
+  public is_sandbox: boolean;
+
+  public setMall(mall: string) {
+    this.mall = mall;
+  }
+
+  public setIsSandbox(is_sandbox: boolean) {
+    this.is_sandbox = is_sandbox;
+  }
 }

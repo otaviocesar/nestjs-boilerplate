@@ -13,6 +13,7 @@ export default class GetRecipientDto {
 
 export interface ContaBancaria {
   id: number;
+  nome: string;
   codigoBanco: string;
   agencia: string;
   agenciaDv: string;

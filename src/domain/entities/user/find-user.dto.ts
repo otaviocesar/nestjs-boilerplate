@@ -42,8 +42,4 @@ export default class FindUserDto {
   public getName(): string {
     return this.name;
   }
-
-  public getEmail(): string {
-    return this.email;
-  }
 }

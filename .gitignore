@@ -43,3 +43,6 @@ lerna-debug.log*
 
 #Snyk
 .dccache
+
+#Cloud Build Local
+local-cloudbuild.yaml

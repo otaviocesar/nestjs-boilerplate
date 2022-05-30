@@ -33,13 +33,6 @@ describe('AppController (integration)', () => {
         .post('/users')
         .set('Accept', 'application/json; charset=utf-8')
         .send(mockUser)
-        .expect((response: request.Response) => {
-          const { id, name, password, email } = response.body;
-          expect(typeof id).toBe('string'),
-            expect(name).toEqual(mockUser.getName()),
-            expect(email).toEqual(mockUser.getEmail()),
-            expect(password).toBeUndefined();
-        })
         .expect(HttpStatus.CREATED);
     });
 

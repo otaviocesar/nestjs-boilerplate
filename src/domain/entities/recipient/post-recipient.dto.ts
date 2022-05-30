@@ -1,12 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, MinLength, IsOptional } from 'class-validator';
+import {
+  IsString,
+  MinLength,
+  MaxLength,
+  IsOptional,
+  Matches,
+} from 'class-validator';
+
+import { IsCPFOrCNPJ } from 'brazilian-class-validator';
 
 export default class PostRecipientDto {
   private id: string;
 
   @IsString()
   @MinLength(3)
-  @IsOptional()
+  @MaxLength(30)
+  @ApiProperty({
+    type: String,
+    example: 'Nome',
+    description: 'Nome',
+  })
+  private nome: string;
+
+  @IsString()
+  @MinLength(3)
   @ApiProperty({
     type: String,
     example: '341',
@@ -15,8 +32,8 @@ export default class PostRecipientDto {
   private codigoBanco: string;
 
   @IsString()
-  @MinLength(4)
-  @IsOptional()
+  @MinLength(1)
+  @MaxLength(4)
   @ApiProperty({
     type: String,
     example: '0670',
@@ -25,18 +42,19 @@ export default class PostRecipientDto {
   private agencia: string;
 
   @IsString()
-  @MinLength(3)
+  @MinLength(1)
+  @MaxLength(1)
   @IsOptional()
   @ApiProperty({
     type: String,
-    example: '123',
+    example: '1',
     description: 'agenciaDv',
   })
   private agenciaDv: string;
 
   @IsString()
-  @MinLength(4)
-  @IsOptional()
+  @MinLength(1)
+  @MaxLength(13)
   @ApiProperty({
     type: String,
     example: '99584',
@@ -46,7 +64,7 @@ export default class PostRecipientDto {
 
   @IsString()
   @MinLength(1)
-  @IsOptional()
+  @MaxLength(2)
   @ApiProperty({
     type: String,
     example: '4',
@@ -56,7 +74,6 @@ export default class PostRecipientDto {
 
   @IsString()
   @MinLength(4)
-  @IsOptional()
   @ApiProperty({
     type: String,
     example: 'conta_corrente',
@@ -65,18 +82,20 @@ export default class PostRecipientDto {
   private tipoConta: string;
 
   @IsString()
-  @MinLength(14)
-  @IsOptional()
+  @IsCPFOrCNPJ()
+  @Matches(/(^\d{11}$)|(^\d{14}$)/, {
+    message: 'cpfCnpj must be 11-14 character numbers.',
+  })
   @ApiProperty({
     type: String,
     example: '08803837000180',
     description: 'cpfCnpj',
   })
-  private cpfCnpj: string;
+  public cpfCnpj: string;
 
   @IsString()
-  @MinLength(4)
-  @IsOptional()
+  @MinLength(3)
+  @MaxLength(4)
   @ApiProperty({
     type: String,
     example: 'cnpj',
@@ -84,72 +103,36 @@ export default class PostRecipientDto {
   })
   private tipoDocumento: string;
 
-  public getId(): string {
-    return this.id;
-  }
-
-  public setId(id: string) {
-    this.id = id;
-  }
-
-  public getCodigoBanco(): string {
-    return this.codigoBanco;
+  public setNome(nome: string) {
+    this.nome = nome;
   }
 
   public setCodigoBanco(codigoBanco: string) {
     this.codigoBanco = codigoBanco;
   }
 
-  public getAgencia(): string {
-    return this.agencia;
-  }
-
   public setAgencia(agencia: string) {
     this.agencia = agencia;
-  }
-
-  public getAgenciaDv(): string {
-    return this.agenciaDv;
   }
 
   public setAgenciaDv(agenciaDv: string) {
     this.agenciaDv = agenciaDv;
   }
 
-  public getConta(): string {
-    return this.conta;
-  }
-
   public setConta(conta: string) {
     this.conta = conta;
-  }
-
-  public getContaDv(): string {
-    return this.contaDv;
   }
 
   public setContaDv(contaDv: string) {
     this.contaDv = contaDv;
   }
 
-  public getTipoConta(): string {
-    return this.tipoConta;
-  }
-
   public setTipoConta(tipoConta: string) {
     this.tipoConta = tipoConta;
   }
 
-  public getCpfCnpj(): string {
-    return this.cpfCnpj;
-  }
-
   public setCpfCnpj(cpfCnpj: string) {
     this.cpfCnpj = cpfCnpj;
-  }
-
-  public getTipoDocumento(): string {
-    return this.tipoDocumento;
   }
 
   public setTipoDocumento(tipoDocumento: string) {

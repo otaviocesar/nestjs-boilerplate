@@ -10,7 +10,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('NestJS Boilerplate')
-    .setDescription('The API description')
+    .setDescription(
+      'This project is a chassis, an starter code that represents the base microservice project to develop and deploy a NestJS framework project.',
+    )
     .setVersion('1.0.0')
     .addBearerAuth(
       {
@@ -23,10 +25,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  const validationPipeOptions: ValidationPipeOptions = {
-    forbidUnknownValues: true,
-  };
-  app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(PORT);
 }

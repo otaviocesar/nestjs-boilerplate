@@ -29,20 +29,8 @@ export default class AuthDto {
     this.password = password;
   }
 
-  public getId(): string {
-    return this.id;
-  }
-
-  public getEmail(): string {
-    return this.email;
-  }
-
   public setEmail(email: string) {
     this.email = email;
-  }
-
-  public getPassword(): string {
-    return this.password;
   }
 
   public setPassword(password: string) {
@@ -50,6 +38,6 @@ export default class AuthDto {
   }
 
   async comparePassword(attempt: string) {
-    return await bcrypt.compare(attempt, this.password);
+    return bcrypt.compare(attempt, this.password);
   }
 }

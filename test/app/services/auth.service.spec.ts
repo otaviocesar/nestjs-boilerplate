@@ -1,4 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing'
+import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from '../../../src/app/services/auth.service';
 import { UserRepository } from '../../../src/infra/adapters/repositories/mongodb/user.repository';
 import { MongooseModule } from '@nestjs/mongoose';

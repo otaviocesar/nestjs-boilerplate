@@ -1,7 +1,5 @@
 import User from '../../../../domain/entities/user/user.dto';
 import Auth from '../../../../domain/entities/auth/auth.dto';
-import CreateUserDto from '../../../../domain/entities/user/create-user.dto';
-import UpdateUserDto from '../../../../domain/entities/user/update-user.dto';
 import FindUserDto from '../../../../domain/entities/user/find-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import {
@@ -30,7 +28,7 @@ export class UserRepository implements UserRepositoryPort {
     return UserMapper.toFindDomains(users);
   }
 
-  public async save(user: CreateUserDto): Promise<CreateUserDto> {
+  public async save(user: User): Promise<User> {
     let userCreated = new this.userModel(user);
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(userCreated.password, salt);
@@ -67,10 +65,7 @@ export class UserRepository implements UserRepositoryPort {
     }
   }
 
-  public async update(
-    userId: string,
-    user: UpdateUserDto,
-  ): Promise<UpdateUserDto> {
+  public async update(userId: string, user: User): Promise<User> {
     if (mongoose.Types.ObjectId.isValid(userId)) {
       const userUpdated = await this.userModel.findByIdAndUpdate(userId, user);
       if (!userUpdated) {

@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 const NODE_ENV: string = process.env.NODE_ENV;
 
-const PORT: number = +process.env.SERVER_PORT || 3000;
+const PORT: number = +process.env.SERVER_PORT;
 
 const SECRET_JWT = process.env.SECRET_JWT;
 

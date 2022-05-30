@@ -4,4 +4,4 @@ import { Module } from '@nestjs/common';
 @Module({
   imports: [HttpModule],
 })
-export class GatewayModule {}
+export class HttpClientModule {}
